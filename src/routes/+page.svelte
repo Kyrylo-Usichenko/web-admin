@@ -54,11 +54,24 @@
 		</div>
 	{:else}
 		<h1>Orders</h1>
-		<Grid data={orders} {columns} search pagination={{ limit: 15 }} on:rowClick={onOrderClick} />
+		<Grid
+			className={{
+				table: 'table'
+			}}
+			data={orders}
+			{columns}
+			height="500px"
+			search
+			pagination={{
+				limit: 50
+			}}
+			fixedHeader
+			on:rowClick={onOrderClick}
+		/>
 	{/if}
 </main>
 
-<style global>
+<style>
 	@import 'https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css';
 	.loader {
 		margin: 0 auto;
@@ -70,5 +83,13 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+	}
+	.table {
+		& tr:hover td {
+			background-color: black;
+			& td {
+				background-color: black;
+			}
+		}
 	}
 </style>
