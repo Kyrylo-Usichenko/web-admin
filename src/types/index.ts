@@ -23,6 +23,11 @@ export type NoteAttribute = {
 	value: string;
 };
 
-export type NoteAttributes = NoteAttribute[];
+export type Fragrance = {
+	code: string;
+	name: string;
+};
 
 export type Orders = Order[];
+export type Fragrances = Fragrance[];
+export type NoteAttributes = NoteAttribute[];

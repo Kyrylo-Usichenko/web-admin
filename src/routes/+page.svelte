@@ -8,7 +8,7 @@
 	import { columns } from './utils';
 
 	let orders: Orders = [];
-	let loading = false;
+	let loading = true;
 
 	const fetchOrders = async () => {
 		try {
@@ -39,10 +39,10 @@
 			console.log(value);
 
 			if (value.length === 0) {
-				loading = true;
 				const ordersRes = await fetchOrders();
 				ordersStore.set(ordersRes);
 			}
+			loading = false;
 		});
 	});
 </script>
@@ -62,6 +62,11 @@
 	@import 'https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css';
 	.loader {
 		margin: 0 auto;
-		width: fit-content;
+		width: 100%;
+		height: 100%;
+		position: fixed;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 </style>

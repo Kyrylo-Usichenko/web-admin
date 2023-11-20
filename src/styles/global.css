@@ -13,6 +13,9 @@ button {
 		cursor: not-allowed;
 	}
 }
+.gridjs-td {
+	cursor: pointer;
+}
 .gridjs-footer button,
 .gridjs-head button {
 	color: black;

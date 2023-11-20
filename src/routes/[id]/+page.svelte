@@ -1,118 +1,101 @@
 <script lang="ts">
 	import Loader from '$lib/shared/loader/Loader.svelte';
-	import Modal from '$lib/shared/modal/Modal.svelte';
 	import { onMount } from 'svelte';
-	import type { OrderDetails } from '../../types/index.js';
+	import type { Fragrances } from '../../types';
+	import EditModal from './EditModal.svelte';
+	import type { Scents } from './types.js';
 	import { fetchFragrances, fetchOrder } from './utils.js';
 
 	export let data;
-	let order: OrderDetails | null = null;
-	let fragrances: any[] | null = null;
+
+	let allScents: Fragrances | null = null;
 	let loading = true;
 	let isModalOpened: boolean = false;
+	let orderName = '';
+	let scents: Scents = {
+		main: '',
+		secondary1: '',
+		secondary2: ''
+	};
 
 	const toggleModal = () => {
 		isModalOpened = !isModalOpened;
 	};
-	console.log();
 
 	onMount(async () => {
 		loading = true;
 		try {
 			const [orderRes, fragrancesRes] = await Promise.all([fetchOrder(data), fetchFragrances()]);
-			order = orderRes;
-			fragrances = fragrancesRes;
+			scents = {
+				main:
+					orderRes.note_attributes.find((attribute) => attribute.value === 'New You')?.name || '',
+				secondary1:
+					orderRes.note_attributes.find((attribute) => attribute.value === 'Scent 2')?.name || '',
+				secondary2:
+					orderRes.note_attributes.find((attribute) => attribute.value === 'Scent 3')?.name || ''
+			};
+			orderName = orderRes.name;
+			allScents = fragrancesRes;
 		} catch (e) {
 			console.log(e);
 		} finally {
 			loading = false;
 		}
 	});
-	$: console.log(order?.note_attributes);
 </script>
 
-<a href="/"> <button>Go back</button></a>
+{#if loading}
+	<div class="loader">
+		<Loader />
+	</div>
+{:else}
+	<main class="wrapper">
+		<a href="/"> <button>Go back</button></a>
 
-<h2>Order: {order?.name} {data.id}</h2>
+		<h2>Order: {orderName} {data.id}</h2>
 
-<p class="scents">SCENTS</p>
-
-<main class="wrapper">
-	{#if loading}
-		<div class="loader">
-			<Loader />
-		</div>
-	{:else}
+		<p class="scents">SCENTS</p>
 		<table class="table">
-			{#if order}
-				{#each order.note_attributes as atrribute}
-					{#if atrribute.value === 'New You' || atrribute.value === 'Scent 2' || atrribute.value === 'Scent 3'}
-						<tr>
-							<td>{atrribute.value}</td>
-							<td>{atrribute.name}</td>
-						</tr>
-					{/if}
-				{/each}
+			{#if scents}
+				<tr>
+					<td>New You</td>
+					<td>{scents.main}</td>
+				</tr>
+				<tr>
+					<td>Scent 2</td>
+					<td>{scents.secondary1}</td>
+				</tr>
+				<tr>
+					<td>Scent 3</td>
+					<td>{scents.secondary2}</td>
+				</tr>
 			{/if}
 		</table>
 
 		<button on:click={toggleModal} class="editScent">Edit scents</button>
-	{/if}
 
-	{#if isModalOpened && fragrances}
-		<Modal {toggleModal}>
-			<div>
-				{#if order}
-					<p>New You</p>
-					<select class="select" name="" id="">
-						{#each fragrances as fragrance}
-							<option value={fragrance.code}>({fragrance.code}) {fragrance.name}</option>
-						{/each}
-					</select>
-					<p>Scent 2</p>
-					<select class="select" name="" id="">
-						{#each fragrances as fragrance}
-							<option value={fragrance.code}>({fragrance.code}) {fragrance.name}</option>
-						{/each}
-					</select>
-					<p>Scent 3</p>
-					<select class="select" name="" id="">
-						{#each fragrances as fragrance}
-							<option value={fragrance.code}>({fragrance.code}) {fragrance.name}</option>
-						{/each}
-					</select>
-				{/if}
-			</div>
-			<div class="buttons">
-				<button
-					on:click={() => {
-						toggleModal;
-					}}>Save</button
-				>
-			</div>
-		</Modal>
-	{/if}
-</main>
+		{#if isModalOpened && allScents}
+			<EditModal {allScents} {toggleModal} {scents} />
+		{/if}
+	</main>
+{/if}
 
-<style global>
-	@import 'https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css';
-	.buttons {
-		margin: 20px auto 0;
-		display: flex;
-		justify-content: space-between;
-	}
+<style>
 	.table {
 		border-spacing: 0;
 		border-collapse: collapse;
-		& td {
-			border: 1px solid black;
-		}
+		text-overflow: ellipsis;
 
 		& td {
-			padding: 0 8px;
+			max-width: 200px;
 			height: 32px;
-			width: 200px;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+			padding: 0 8px;
 			font-size: 14px;
+			border: 1px solid black;
+
 			&:first-child {
 				width: 120px;
 			}
@@ -129,5 +112,14 @@
 	}
 	.scents {
 		margin: 48px auto 16px;
+	}
+	.loader {
+		margin: 0 auto;
+		width: 100%;
+		height: 100%;
+		position: fixed;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 </style>
