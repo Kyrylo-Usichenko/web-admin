@@ -1,0 +1,19 @@
+:root {
+	--main-bg-color: #2d3a3a;
+	font-family: 'JetBrains Mono', monospace !important;
+}
+
+button {
+	padding: 10px;
+	background: var(--main-bg-color);
+	border: none;
+	color: #fffbf5;
+	cursor: pointer;
+	&:disabled {
+		cursor: not-allowed;
+	}
+}
+.gridjs-footer button,
+.gridjs-head button {
+	color: black;
+}

@@ -1,0 +1,11 @@
+<div class="container">
+	<slot />
+</div>
+
+<style>
+	.container {
+		margin: 0 auto;
+		padding: 0 15px;
+		max-width: 1240px;
+	}
+</style>
