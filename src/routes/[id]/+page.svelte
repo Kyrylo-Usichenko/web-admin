@@ -8,7 +8,7 @@
 	import AllocationInfo from './AllocationInfo.svelte';
 	import EditModal from './EditModal.svelte';
 	import type { Scents } from './types.js';
-	import { fetchFragrances } from './utils.js';
+	import { extractScentCode, fetchFragrances } from './utils.js';
 
 	export let data;
 
@@ -29,8 +29,10 @@
 		isSaving = true;
 		try {
 			await aiApi.setScents({
-				orderId: data.id,
-				...scentsToSave
+				orderId: +data.id,
+				main: extractScentCode(scentsToSave.main),
+				secScent1: extractScentCode(scentsToSave.secScent1),
+				secScent2: extractScentCode(scentsToSave.secScent2)
 			});
 			scents = {
 				main: scentsToSave.main,
@@ -81,9 +83,7 @@
 </script>
 
 {#if loading}
-	<div class="loader">
-		<Loader />
-	</div>
+	<Loader />
 {:else}
 	<main class="wrapper">
 		<a href="/">
@@ -101,7 +101,7 @@
 		/>
 
 		<p class="scents">SCENTS</p>
-		<table class="table">
+		<table class="table1">
 			{#if scents}
 				<tr>
 					<td>New You</td>
@@ -136,7 +136,7 @@
 {/if}
 
 <style>
-	.table {
+	.table1 {
 		table-layout: fixed;
 		border-spacing: 0;
 		border-collapse: collapse;

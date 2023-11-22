@@ -22,7 +22,7 @@ class Ai extends HttpClient {
 		this.instance.get<GetOrderResBody>(`/admin/influencer-store-orders/order/${id}`);
 
 	public setScents = (body: SetScentsReqBody) =>
-		this.instance.put('/admin/influencer-store-orders/order', body);
+		this.instance.put('/admin/update-influencer-scents', body);
 }
 
 export default Ai;

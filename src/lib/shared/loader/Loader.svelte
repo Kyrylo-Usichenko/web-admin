@@ -15,12 +15,16 @@
 
 <style>
 	.lds-spinner {
-		color: official;
+		position: fixed;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		/* color: official; */
 		display: inline-block;
-		position: relative;
+		/* position: relative; */
 		width: 40px;
 		height: 40px;
-		margin: -40px 0 0 -70px;
+		margin: 0 0 0 -20px;
 	}
 	.lds-spinner div {
 		transform-origin: 40px 40px;

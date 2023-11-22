@@ -11,7 +11,7 @@
 
 <div>
 	<h3>Allocation Info</h3>
-	<table class="table">
+	<table class="table1">
 		<tr>
 			<td>Gender</td>
 			<td>{data.gender}</td>
@@ -28,7 +28,7 @@
 </div>
 
 <style>
-	.table {
+	.table1 {
 		table-layout: fixed;
 		border-spacing: 0;
 		border-collapse: collapse;

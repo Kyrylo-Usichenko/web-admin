@@ -14,4 +14,8 @@ export const fetchFragrances = async () => {
 	return order.data;
 };
 
+export const extractScentCode = (scent: string) => {
+	return scent.replace('(', '').replace(')', '').split(' ')[0];
+};
+
 export const availableScentTypes = ['New You', 'Scent 2', 'Scent 3'];
