@@ -14,8 +14,7 @@
 	const fetchOrders = async () => {
 		try {
 			const orders = await aiApi.getOrders();
-			console.log(orders);
-			
+
 			return orders.data.data.map((order: Order) => {
 				return {
 					orderId: order.name,
@@ -38,7 +37,6 @@
 	onMount(async () => {
 		ordersStore.subscribe(async (value) => {
 			orders = value;
-			console.log(value);
 
 			if (value.length === 0) {
 				const ordersRes = await fetchOrders();

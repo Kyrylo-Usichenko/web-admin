@@ -7,7 +7,6 @@
 		mood?: Mood;
 	};
 	export let data: Props;
-	$: console.log(data);
 </script>
 
 <div>
