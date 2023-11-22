@@ -1,17 +1,11 @@
 :root {
-	--main-bg-color: #2d3a3a;
+	--main-bg-color: rgb(44, 58, 58);
+	--main-bg-color-disabled: rgb(44, 58, 58, 0.5);
 	font-family: 'JetBrains Mono', monospace !important;
 }
 
 button {
-	padding: 10px;
-	background: var(--main-bg-color);
-	border: none;
-	color: #fffbf5;
 	cursor: pointer;
-	&:disabled {
-		cursor: not-allowed;
-	}
 }
 .gridjs-td {
 	cursor: pointer;

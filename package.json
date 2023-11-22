@@ -29,6 +29,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"axios": "^1.6.2",
 		"gridjs": "^6.0.6",
 		"gridjs-svelte": "^2.1.1"
 	}

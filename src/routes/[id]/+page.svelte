@@ -1,21 +1,48 @@
 <script lang="ts">
+	import Button from '$lib/shared/button/Button.svelte';
 	import Loader from '$lib/shared/loader/Loader.svelte';
 	import { onMount } from 'svelte';
-	import type { Fragrances } from '../../types';
+	import { aiApi } from '../../api';
+	import type { SetScentsReqBodyScents } from '../../api/main/types';
+	import type { Fragrances, JourneyData } from '../../types';
+	import AllocationInfo from './AllocationInfo.svelte';
 	import EditModal from './EditModal.svelte';
 	import type { Scents } from './types.js';
-	import { fetchFragrances, fetchOrder } from './utils.js';
+	import { fetchFragrances } from './utils.js';
 
 	export let data;
 
 	let allScents: Fragrances | null = null;
 	let loading = true;
+	let isSaving = false;
 	let isModalOpened: boolean = false;
 	let orderName = '';
+	let orderInfo: any = null;
 	let scents: Scents = {
 		main: '',
 		secondary1: '',
 		secondary2: ''
+	};
+	let journey: JourneyData | null = null;
+
+	const saveScents = async (scentsToSave: SetScentsReqBodyScents) => {
+		isSaving = true;
+		try {
+			await aiApi.setScents({
+				orderId: data.id,
+				...scentsToSave
+			});
+			scents = {
+				main: scentsToSave.main,
+				secondary1: scentsToSave.secScent1,
+				secondary2: scentsToSave.secScent2
+			};
+			toggleModal();
+		} catch (e) {
+			alert(e);
+		} finally {
+			isSaving = false;
+		}
 	};
 
 	const toggleModal = () => {
@@ -25,16 +52,25 @@
 	onMount(async () => {
 		loading = true;
 		try {
-			const [orderRes, fragrancesRes] = await Promise.all([fetchOrder(data), fetchFragrances()]);
+			const [orderRes, fragrancesRes] = await Promise.all([
+				await aiApi.getOrder(data.id),
+				fetchFragrances()
+			]);
+
+			const { note_attributes, name, journeyData } = orderRes.data.data;
+
+			// const asd = webAdminApi.getFragnanceDetails(journeyData.fragrance.name);
+
+			journey = journeyData;
+
 			scents = {
-				main:
-					orderRes.note_attributes.find((attribute) => attribute.value === 'New You')?.name || '',
-				secondary1:
-					orderRes.note_attributes.find((attribute) => attribute.value === 'Scent 2')?.name || '',
-				secondary2:
-					orderRes.note_attributes.find((attribute) => attribute.value === 'Scent 3')?.name || ''
+				main: note_attributes.find((attribute) => attribute.value === 'New You')?.name || '',
+				secondary1: note_attributes.find((attribute) => attribute.value === 'Scent 2')?.name || '',
+				secondary2: note_attributes.find((attribute) => attribute.value === 'Scent 3')?.name || ''
 			};
-			orderName = orderRes.name;
+
+			orderName = name;
+			orderInfo = orderRes;
 			allScents = fragrancesRes;
 		} catch (e) {
 			console.log(e);
@@ -50,9 +86,19 @@
 	</div>
 {:else}
 	<main class="wrapper">
-		<a href="/"> <button>Go back</button></a>
+		<a href="/">
+			<Button text="Go back" />
+		</a>
 
 		<h2>Order: {orderName} {data.id}</h2>
+
+		<AllocationInfo
+			data={{
+				gender: journey?.gender,
+				time: journey?.time,
+				mood: journey?.mode
+			}}
+		/>
 
 		<p class="scents">SCENTS</p>
 		<table class="table">
@@ -72,22 +118,33 @@
 			{/if}
 		</table>
 
-		<button on:click={toggleModal} class="editScent">Edit scents</button>
+		<div class="editWrapper">
+			<Button onClick={toggleModal} text="Edit scent" />
+		</div>
 
-		{#if isModalOpened && allScents}
-			<EditModal {allScents} {toggleModal} {scents} />
+		{#if allScents}
+			<EditModal
+				{allScents}
+				{toggleModal}
+				{scents}
+				onSave={saveScents}
+				isLoading={isSaving}
+				isOpened={isModalOpened}
+			/>
 		{/if}
 	</main>
 {/if}
 
 <style>
 	.table {
+		table-layout: fixed;
 		border-spacing: 0;
 		border-collapse: collapse;
 		text-overflow: ellipsis;
 
 		& td {
-			max-width: 200px;
+			min-width: 103px;
+			max-width: 163px;
 			height: 32px;
 			text-overflow: ellipsis;
 			overflow: hidden;
@@ -97,19 +154,15 @@
 			border: 1px solid black;
 
 			&:first-child {
-				width: 120px;
+				min-width: 83px !important;
+				max-width: 120px !important;
 			}
 		}
 	}
-	.editScent {
-		height: 36px;
+	.editWrapper {
 		margin: 8px auto 0;
-		padding: 0 16px;
-		border-radius: 4px;
 	}
-	.select {
-		height: 36px;
-	}
+
 	.scents {
 		margin: 48px auto 16px;
 	}

@@ -28,6 +28,17 @@ export type Fragrance = {
 	name: string;
 };
 
+export type JourneyData = {
+	gender?: Gender;
+	time?: Time;
+	mode?: Mood;
+	fragrance: Fragrance;
+};
+
+export type Gender = 'feminine' | 'masculine' | 'unisex';
+export type Time = 'day' | 'night';
+export type Mood = 'sexy' | 'elegant' | 'fresh';
+
 export type Orders = Order[];
 export type Fragrances = Fragrance[];
 export type NoteAttributes = NoteAttribute[];

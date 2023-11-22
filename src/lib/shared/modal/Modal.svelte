@@ -1,12 +1,14 @@
 <script lang="ts">
 	export let toggleModal: () => void;
+	export let isOpened: boolean;
+	export let isClosable: boolean;
 </script>
 
-<div class="wrapper">
+<div class={isOpened ? 'wrapper' : 'hidden'}>
 	<div class="inner">
 		<slot />
 	</div>
-	<div on:click={toggleModal} class="grey" />
+	<div on:click={isClosable ? toggleModal : () => {}} class="grey" />
 </div>
 
 <style>
@@ -35,5 +37,9 @@
 		padding: 30px;
 		background: white;
 		border-radius: 10px;
+	}
+
+	.hidden {
+		visibility: hidden;
 	}
 </style>

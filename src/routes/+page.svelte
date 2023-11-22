@@ -4,6 +4,7 @@
 	import { ordersStore } from '$lib/stores/ordersStore';
 	import Grid from 'gridjs-svelte';
 	import { onMount } from 'svelte';
+	import { aiApi } from '../api';
 	import type { Order, Orders } from '../types';
 	import { columns } from './utils';
 
@@ -12,8 +13,9 @@
 
 	const fetchOrders = async () => {
 		try {
-			const res = await fetch('https://api.scentcraft.ai/admin/influencer-store-orders');
-			const orders = await res.json();
+			const orders = await aiApi.getOrders();
+			console.log(orders);
+			
 			return orders.data.data.map((order: Order) => {
 				return {
 					orderId: order.name,
