@@ -1,12 +1,12 @@
 <script lang="ts">
+	import { aiApi } from '$api/index';
 	import Button from '$lib/shared/button/Button.svelte';
 	import Loader from '$lib/shared/loader/Loader.svelte';
+	import type { Fragrances, JourneyData } from '$types/index';
 	import { onMount } from 'svelte';
-	import { aiApi } from '../../api';
-	import type { SetScentsReqBodyScents } from '../../api/main/types';
-	import type { Fragrances, JourneyData } from '../../types';
+	import type { SetScentsReqBodyScents } from '../../../api/main/types';
 	import AllocationInfo from './AllocationInfo.svelte';
-	import EditModal from './EditModal.svelte';
+	import EditModal from '../../orders/influencers/[id]/components/EditModal.svelte';
 	import type { Scents } from './types.js';
 	import { extractScentCode, fetchFragrances } from './utils.js';
 
@@ -28,7 +28,7 @@
 	const saveScents = async (scentsToSave: SetScentsReqBodyScents) => {
 		isSaving = true;
 		try {
-			await aiApi.setScents({
+			await aiApi.setInfluencerScents({
 				orderId: +data.id,
 				main: extractScentCode(scentsToSave.main),
 				secScent1: extractScentCode(scentsToSave.secScent1),
@@ -55,7 +55,7 @@
 		loading = true;
 		try {
 			const [orderRes, fragrancesRes] = await Promise.all([
-				await aiApi.getOrder(data.id),
+				await aiApi.getInfluencerOrder(data.id),
 				fetchFragrances()
 			]);
 

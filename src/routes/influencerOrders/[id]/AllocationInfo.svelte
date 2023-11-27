@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { Gender, Mood, Time } from '../../types';
+	import type { Gender, Mood, Time } from "$types/index";
+
 
 	type Props = {
 		gender?: Gender;

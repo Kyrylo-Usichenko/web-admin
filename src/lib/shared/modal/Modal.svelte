@@ -29,6 +29,7 @@
 		z-index: 1;
 	}
 	.inner {
+		width: min-content;
 		position: absolute;
 		left: 50%;
 		top: 50%;

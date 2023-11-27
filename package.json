@@ -29,8 +29,10 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@types/node": "^20.10.0",
 		"axios": "^1.6.2",
 		"gridjs": "^6.0.6",
-		"gridjs-svelte": "^2.1.1"
+		"gridjs-svelte": "^2.1.1",
+		"svelte-json-tree": "^2.2.0"
 	}
 }

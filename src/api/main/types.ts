@@ -7,7 +7,7 @@ type SetScentsReqBodyScents = {
 };
 
 interface SetScentsReqBody extends SetScentsReqBodyScents {
-	orderId: number;
+	orderId: number | string;
 }
 
 type GetOrderResBody = {

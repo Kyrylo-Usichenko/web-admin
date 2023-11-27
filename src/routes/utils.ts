@@ -1,16 +1,23 @@
-export const columns = [
+export type Route = {
+	name: string;
+	path: string;
+};
+
+export const routes: Route[] = [
 	{
-		name: 'Order ID',
-		class: 'hidden'
+		name: 'Customers orders',
+		path: '/orders?ordersType=influencerShop'
 	},
 	{
-		name: 'Email'
+		name: 'Influencers DIY',
+		path: '/orders?ordersType=influencerDiy'
 	},
 	{
-		name: 'Order Version'
+		name: 'DIY',
+		path: '/orders?ordersType=normalDiy'
 	},
 	{
-		name: 'Hidden ID',
-		hidden: true
+		name: 'Influencers',
+		path: '/orders/influencers'
 	}
 ];

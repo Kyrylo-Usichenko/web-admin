@@ -1,4 +1,4 @@
-import type { OrderDetails } from '../../types';
+import type { OrderDetails } from '../../../types';
 
 export const fetchOrder = async (data: { id: string }): Promise<OrderDetails> => {
 	const res = await fetch(
