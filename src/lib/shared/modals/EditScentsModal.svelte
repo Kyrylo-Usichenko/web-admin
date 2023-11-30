@@ -2,8 +2,8 @@
 	import type { SetScentsReqBodyScents } from '$api/main/types';
 	import Button from '$lib/shared/button/Button.svelte';
 	import Modal from '$lib/shared/modal/Modal.svelte';
-	import type { AllScents, Scents } from './types';
-	import { findScent } from './utils';
+	import type { AllScents, Scents } from '../../../routes/influencers/[id]/components/types';
+	import { findScent } from '../../../routes/influencers/[id]/components/utils';
 
 	export let allScents: AllScents;
 	export let toggleModal: () => void;

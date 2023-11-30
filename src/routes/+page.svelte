@@ -3,6 +3,6 @@
 	import { onMount } from 'svelte';
 
 	onMount(() => {
-		goto('/orders?ordersType=influencerShop');
+		goto('/influencers');
 	});
 </script>

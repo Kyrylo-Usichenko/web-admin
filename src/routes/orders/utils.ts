@@ -1,25 +1,46 @@
-import type { OrderType } from '$types/customerOrders';
-import { aiApi } from '../../api';
-
-export const getOrders = async (orderType: OrderType) => {
-	try {
-		const response = await aiApi.getOrders(orderType);
-		return response.data.orders || [];
-	} catch (err) {
-		console.log(err);
-		return [];
-	}
-};
-
 export const columns = [
 	{
 		name: 'Id',
 		hidden: true
 	},
 	{
-		name: 'Order ID'
+		name: 'Order name'
+	},
+	{
+		name: 'name'
+	},
+	{
+		name: 'Email'
+	},
+	{
+		name: 'Financial Status'
+	},
+	{
+		name: 'Total Price'
 	},
 	{
 		name: 'Created At'
 	}
 ];
+export const routes: Route[] = [
+	{
+		name: 'Customers orders',
+		path: '/orders?ordersType=influencerShop',
+		ordersType: 'influencerShop'
+	},
+	{
+		name: 'Influencers DIY',
+		path: '/orders?ordersType=influencerDiy',
+		ordersType: 'influencerDiy'
+	},
+	{
+		name: 'DIY',
+		path: '/orders?ordersType=normalDiy',
+		ordersType: 'normalDiy'
+	}
+];
+export type Route = {
+	name: string;
+	path: string;
+	ordersType: 'influencerShop' | 'influencerDiy' | 'normalDiy';
+};

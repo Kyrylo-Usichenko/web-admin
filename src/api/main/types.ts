@@ -6,11 +6,29 @@ type SetScentsReqBodyScents = {
 	secScent2: string;
 };
 
-interface SetScentsReqBody extends SetScentsReqBodyScents {
+export interface SetInfluencerScentsReqBody extends SetScentsReqBodyScents {
+	contactId: number | string;
+}
+
+export interface SetScentsReqBody extends SetScentsReqBodyScents {
 	orderId: number | string;
 }
 
-type GetOrderResBody = {
+export interface SetInfluencerDiyScentsReqBody {
+	orderId: number | string;
+	main: string;
+	secScent: string;
+	influencerScent: string;
+}
+
+export interface SetShopOrderScentsReqBody {
+	orderId: number | string;
+	main: string;
+	secScent1: string;
+	secScent2: string;
+}
+
+export type GetInfluencerOrderResBody = {
 	status: 'success' | 'error';
 	data: {
 		name: string;
@@ -19,4 +37,4 @@ type GetOrderResBody = {
 	};
 };
 
-export type { GetOrderResBody, SetScentsReqBody, SetScentsReqBodyScents };
+export type { SetScentsReqBodyScents };

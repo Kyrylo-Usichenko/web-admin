@@ -12,7 +12,7 @@
 
 	const onOrderClick = (cellInfo: any) => {
 		const id = cellInfo.detail[1]._cells[0].data;
-		goto(`/orders/influencers/${id}`);
+		goto(`/influencers/${id}`);
 	};
 
 	const setInfluencers = async () => {
@@ -20,7 +20,6 @@
 		try {
 			const ordersRes = await aiApi.getInfluencers();
 			tableData = ordersRes.data.data;
-			console.log(tableData);
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -32,19 +31,19 @@
 	});
 </script>
 
-<div>
+<div class="asdasd">
 	{#if loading}
 		<Loader />
 	{:else}
 		<Grid
 			className={{
-				table: 'table'
+				table: 'generalTable'
 			}}
 			data={tableData.map((influencer) => {
 				return {
 					id: influencer.hubspotContactId,
 					email: influencer.email,
-					name: `${influencer?.firstName?.trim() || ''} ${influencer?.lastName?.trim() || ''}`
+					name: influencer.name
 				};
 			})}
 			height="500px"

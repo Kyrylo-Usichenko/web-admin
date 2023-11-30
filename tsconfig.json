@@ -14,7 +14,8 @@
 			"$utils/*": ["./src/utils/*"],
 			"$types/*": ["./src/types/*"],
 			"$lib/*": ["./src/lib/*"],
-			"$api/*": ["./src/api/*"]
+			"$api/*": ["./src/api/*"],
+			"$lib": ["./src/lib"]
 		}
 	},
 	"exclude": ["node_modules/*"]

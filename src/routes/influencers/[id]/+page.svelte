@@ -1,11 +1,11 @@
 <script lang="ts">
+	import { aiApi } from '$api/index';
 	import Button from '$lib/shared/button/Button.svelte';
 	import Loader from '$lib/shared/loader/Loader.svelte';
+	import EditModal from '$lib/shared/modals/EditScentsModal.svelte';
 	import type { InfluencerDetails } from '$types/customerOrders';
+	import type { AllScents } from '$types/index.js';
 	import { onMount } from 'svelte';
-	import { aiApi } from '../../../../api';
-	import EditModal from './components/EditModal.svelte';
-	import type { AllScents } from './components/types';
 
 	export let data;
 
@@ -28,10 +28,8 @@
 		isSaving = true;
 
 		try {
-			console.log('🚀 ~ file: [id].svelte ~ line 70 ~ saveScents ~ scentsToSave', scentsToSave);
-
 			await aiApi.setInfluencerScents({
-				orderId: data.id,
+				contactId: data.id,
 				main: scentsToSave.main,
 				secScent1: scentsToSave.secScent1,
 				secScent2: scentsToSave.secScent2
@@ -119,6 +117,7 @@
 			<Loader />
 		</div>
 	{:else if influencer}
+		<h1>Influencer contactId: {data.id}</h1>
 		<table class="table">
 			<tr>
 				<td>Microsite</td>
@@ -138,7 +137,7 @@
 			</tr>
 			<tr>
 				<td>Scent codes</td>
-				<td class="scents">
+				<td style="padding: 1px 0px 0px 1px;">
 					<table>
 						<tr>
 							<td>Main</td>
@@ -181,31 +180,28 @@
 	.editWrapper {
 		margin: 8px auto 0;
 	}
+
 	.table {
-		margin: 40px 0 0;
-		table-layout: fixed;
-		border-spacing: 0;
 		border-collapse: collapse;
 		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
 
 		& td {
 			min-width: 103px;
-			max-width: 163px;
-			height: 32px;
-			text-overflow: ellipsis;
-			overflow: hidden;
-			white-space: nowrap;
-			padding: 0 8px;
-			font-size: 14px;
-			border: 1px solid black;
-
-			&:first-child {
-				min-width: 83px !important;
-				max-width: 120px !important;
+			border: 1px solid #000;
+			padding: 8px;
+		}
+		& td {
+			& table {
+				width: 100%;
+				border-collapse: collapse;
+				margin: -2px;
+				width: calc(100% + 4px);
+				& td {
+					min-width: unset;
+				}
 			}
 		}
-	}
-	.scents {
-		padding: 0 !important;
 	}
 </style>
