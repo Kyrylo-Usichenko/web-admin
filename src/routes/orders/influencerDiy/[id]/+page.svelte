@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { aiApi } from '$api/index.js';
+	import Alert from '$lib/shared/alert/Alert.svelte';
 	import Button from '$lib/shared/button/Button.svelte';
 	import Loader from '$lib/shared/loader/Loader.svelte';
 	import EditModal from '$lib/shared/modals/EditScentsModal.svelte';
@@ -7,11 +8,11 @@
 	import type { AllScents } from '$types/index.js';
 	import { formatDate, relativeDate } from '$utils/time.js';
 	import { onMount } from 'svelte';
+	import JSONTree from 'svelte-json-tree';
 
 	export let data;
 
 	let order: GetInfluencerDiyOrderData | null = null;
-	let journey: any = null;
 	let loading = true;
 	let isModalOpened = false;
 	let isSaving = false;
@@ -126,7 +127,7 @@
 		<div class="loader">
 			<Loader />
 		</div>
-	{:else if order !== null}
+	{:else if order}
 		<h1 class="title">{order.orderName} | {order.subtotalPrice} {order.currency}</h1>
 		<div class="tags">
 			<div class="tag">{order.orderType}</div>
@@ -172,7 +173,7 @@
 			</tr>
 		</table>
 
-		{#if order.attributes}
+		{#if order.attributes && !order.attributes?.allInfluencerData && !order.attributes?.journeyData}
 			<h2 class="journeyTitle">Journey</h2>
 
 			<table class="table">
@@ -222,6 +223,10 @@
 						<a href={order.attributes.selectedMockup} target="_blank"> Link </a>
 					</td>
 				</tr>
+			</table>
+
+			<h2 class="scentsTitle">Scents</h2>
+			<table class="table">
 				<tr>
 					<td> Main </td>
 					<td> {scents?.main} </td>
@@ -235,25 +240,39 @@
 					<td> {scents?.secScent2} </td>
 				</tr>
 			</table>
-		{/if}
 
-		<div class="editWrapper">
-			<Button onClick={toggleModal} text="Edit scents" />
-		</div>
+			<div class="editWrapper">
+				<Button onClick={toggleModal} text="Edit scents" />
+			</div>
 
-		{#if allScents}
-			<EditModal
-				{allScents}
-				{toggleModal}
-				scents={{
-					main: scents.main,
-					secondary1: scents.secScent1,
-					secondary2: scents.secScent2
-				}}
-				onSave={saveScents}
-				isLoading={isSaving}
-				isOpened={isModalOpened}
-			/>
+			{#if allScents}
+				<EditModal
+					{allScents}
+					{toggleModal}
+					scents={{
+						main: scents.main,
+						secondary1: scents.secScent1,
+						secondary2: scents.secScent2
+					}}
+					onSave={saveScents}
+					isLoading={isSaving}
+					isOpened={isModalOpened}
+				/>
+			{/if}
+		{:else}
+			<Alert>
+				<p>Looks like we cannot process this order.</p>
+				<p>This order is old or was created not by our scentcraft api</p>
+				<p>You can see order just with JSON format below</p>
+			</Alert>
+			<div
+				style="
+				--json-tree-string-color: #cb3f41;
+				--json-tree-symbol-color: #cb3f41;--json-tree-boolean-color: #112aa7;--json-tree-function-color: #112aa7;--json-tree-number-color: #3029cf;--json-tree-label-color: #871d8f;--json-tree-property-color: #000000;--json-tree-arrow-color: #727272;--json-tree-operator-color: #727272;--json-tree-null-color: #8d8d8d;--json-tree-undefined-color: #8d8d8d;--json-tree-date-color: #8d8d8d;--json-tree-internal-color: grey;--json-tree-regex-color: #cb3f41;/* position */--json-tree-li-indentation: 1em;--json-tree-li-line-height: 1.3;/* font */--json-tree-font-size: 16px;
+				--json-tree-font-family: 'Courier New', Courier, monospace;"
+			>
+				<JSONTree defaultExpandedLevel={1} value={order} />
+			</div>
 		{/if}
 	{/if}
 </main>
@@ -268,7 +287,7 @@
 		gap: 5px;
 	}
 	.journeyTitle {
-		margin: 10px 0 0;
+		margin: 20px 0 0;
 	}
 	.tag {
 		margin: 5px 0 0;
@@ -289,6 +308,10 @@
 
 	.editWrapper {
 		margin: 10px 0 0;
+	}
+
+	.scentsTitle {
+		margin: 20px 0 0;
 	}
 	.table {
 		border-collapse: collapse;

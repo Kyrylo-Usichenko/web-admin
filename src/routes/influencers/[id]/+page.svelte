@@ -99,9 +99,9 @@
 				secondary2: secindaryScents2
 			};
 			scents = {
-				main: influencer.scentCodes.main,
-				secScent1: influencer.scentCodes.secondary1,
-				secScent2: influencer.scentCodes.secondary2
+				main: influencer.scentCodes?.main || '',
+				secScent1: influencer.scentCodes?.secondary1 || '',
+				secScent2: influencer.scentCodes?.secondary2 || ''
 			};
 		} catch (err) {
 			console.log(err);
@@ -135,24 +135,21 @@
 				<td>Social Handle</td>
 				<td>{influencer.socialHandle}</td>
 			</tr>
+		</table>
+
+		<h2 class="scentsTitle">Scents</h2>
+		<table class="table">
 			<tr>
-				<td>Scent codes</td>
-				<td style="padding: 1px 0px 0px 1px;">
-					<table>
-						<tr>
-							<td>Main</td>
-							<td>{scents.main}</td>
-						</tr>
-						<tr>
-							<td>Secondary1</td>
-							<td>{scents.secScent1}</td>
-						</tr>
-						<tr>
-							<td>Secondary2</td>
-							<td>{scents.secScent2}</td>
-						</tr>
-					</table>
-				</td>
+				<td>Main</td>
+				<td>{scents.main}</td>
+			</tr>
+			<tr>
+				<td>Secondary1</td>
+				<td>{scents.secScent1}</td>
+			</tr>
+			<tr>
+				<td>Secondary2</td>
+				<td>{scents.secScent2}</td>
 			</tr>
 		</table>
 		<div class="editWrapper">
@@ -179,6 +176,10 @@
 <style>
 	.editWrapper {
 		margin: 8px auto 0;
+	}
+
+	.scentsTitle {
+		margin: 20px 0 0;
 	}
 
 	.table {

@@ -95,6 +95,8 @@ export type SelectedFragrance = {
 
 export interface GetInfluencerDiyOrderData extends ShopifyOrder {
 	attributes: {
+		allInfluencerData?: string | null;
+		journeyData?: string | null;
 		time: Time;
 		mood: Mood;
 		orderType: OrderType;
@@ -125,6 +127,8 @@ export type GetInfluencerDiyOrder = {
 
 export interface GetDiyOrderData extends ShopifyOrder {
 	attributes: {
+		allInfluencerData?: string | null;
+		journeyData?: string | null;
 		time: Time;
 		mood: Mood;
 		orderType: OrderType;
@@ -150,6 +154,8 @@ export type GetShopOrder = {
 };
 export interface GetShopOrderData extends ShopifyOrder {
 	attributes: {
+		allInfluencerData?: string | null;
+		journeyData?: string | null;
 		orderType: OrderType;
 		micrositeSlug: string;
 		email: string;

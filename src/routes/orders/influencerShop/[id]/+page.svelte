@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { aiApi } from '$api/index.js';
+	import Alert from '$lib/shared/alert/Alert.svelte';
 	import Button from '$lib/shared/button/Button.svelte';
 	import Loader from '$lib/shared/loader/Loader.svelte';
 	import EditModal from '$lib/shared/modals/EditScentsModal.svelte';
@@ -7,6 +8,7 @@
 	import type { AllScents } from '$types/index.js';
 	import { formatDate, relativeDate } from '$utils/time.js';
 	import { onMount } from 'svelte';
+	import JSONTree from 'svelte-json-tree';
 
 	export let data;
 
@@ -118,7 +120,7 @@
 			secondary2: secindaryScents2
 		};
 	});
-	$: console.log(scents);
+	$: console.log(allScents);
 </script>
 
 <main class="wrapper">
@@ -171,7 +173,7 @@
 				</td>
 			</tr>
 		</table>
-		{#if order.attributes}
+		{#if order.attributes && !order?.attributes?.allInfluencerData && !order?.attributes?.journeyData}
 			<h2 class="journeyTitle">Purchase</h2>
 
 			<table class="table">
@@ -225,21 +227,35 @@
 					isOpened={isModalOpened}
 				/>
 			{/if}
-		{/if}
+		{:else}
+			<Alert>
+				<p>Looks like we cannot process this order.</p>
+				<p>This order is old or was created not by our scentcraft api</p>
+				<p>You can see order just with JSON format below</p>
+			</Alert>
+			<div
+				style="
+				--json-tree-string-color: #cb3f41;
+				--json-tree-symbol-color: #cb3f41;--json-tree-boolean-color: #112aa7;--json-tree-function-color: #112aa7;--json-tree-number-color: #3029cf;--json-tree-label-color: #871d8f;--json-tree-property-color: #000000;--json-tree-arrow-color: #727272;--json-tree-operator-color: #727272;--json-tree-null-color: #8d8d8d;--json-tree-undefined-color: #8d8d8d;--json-tree-date-color: #8d8d8d;--json-tree-internal-color: grey;--json-tree-regex-color: #cb3f41;/* position */--json-tree-li-indentation: 1em;--json-tree-li-line-height: 1.3;/* font */--json-tree-font-size: 16px;
+				--json-tree-font-family: 'Courier New', Courier, monospace;"
+			>
+				<JSONTree defaultExpandedLevel={1} value={order} />
+			</div>
 
-		{#if allScents}
-			<EditModal
-				{allScents}
-				{toggleModal}
-				scents={{
-					main: scents.main,
-					secondary1: scents.secScent1,
-					secondary2: scents.secScent2
-				}}
-				onSave={saveScents}
-				isLoading={isSaving}
-				isOpened={isModalOpened}
-			/>
+			{#if allScents}
+				<EditModal
+					{allScents}
+					{toggleModal}
+					scents={{
+						main: scents.main,
+						secondary1: scents.secScent1,
+						secondary2: scents.secScent2
+					}}
+					onSave={saveScents}
+					isLoading={isSaving}
+					isOpened={isModalOpened}
+				/>
+			{/if}
 		{/if}
 	{/if}
 </main>
@@ -254,7 +270,7 @@
 		gap: 5px;
 	}
 	.journeyTitle {
-		margin: 10px 0 0;
+		margin: 20px 0 0;
 	}
 	.tag {
 		margin: 5px 0 0;
