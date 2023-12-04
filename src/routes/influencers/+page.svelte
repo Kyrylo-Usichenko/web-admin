@@ -52,8 +52,6 @@
 	};
 
 	const onInputChange = () => {
-		console.log('search', search);
-
 		handlePageChange();
 	};
 
