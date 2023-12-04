@@ -2,13 +2,25 @@
 	export let toggleModal: () => void;
 	export let isOpened: boolean;
 	export let isClosable: boolean;
+
+	const handleModal = () => {
+		if (!isClosable) return;
+		toggleModal();
+	};
+
+	const closeModal = (e: KeyboardEvent) => {
+		if (!isClosable) return;
+		if (e.key === 'Escape') {
+			toggleModal();
+		}
+	};
 </script>
 
 <div class={isOpened ? 'wrapper' : 'hidden'}>
 	<div class="inner">
 		<slot />
 	</div>
-	<div on:click={isClosable ? toggleModal : () => {}} class="grey" />
+	<div on:click={handleModal} class="grey" on:keydown={closeModal} role="button" tabindex="0" />
 </div>
 
 <style>

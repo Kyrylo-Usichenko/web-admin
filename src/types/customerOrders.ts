@@ -20,7 +20,10 @@ export type CustomerOrder = {
 };
 
 export type GetInfluencersResBody = {
-	data: Influencer[];
+	data: {
+		influencers: Influencer[];
+		total: number;
+	};
 };
 
 export type Influencer = {

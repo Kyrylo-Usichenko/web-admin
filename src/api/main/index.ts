@@ -53,7 +53,12 @@ class Ai extends HttpClient {
 	public getInfluencerShopOrder = (orderId: string | number) =>
 		this.instance.get<GetShopOrder>(`/admin/orders/influencerShop/${orderId}`);
 
-	public getInfluencers = () => this.instance.get<GetInfluencersResBody>('/admin/influencers');
+	public getInfluencers = (limit: number, offset: number, search: string) =>
+		this.instance.get<GetInfluencersResBody>(
+			`/admin/influencers?limit=${limit}&offset=${offset} ${
+				search === '' ? `` : `&search=${search}`
+			}`
+		);
 
 	public getInfluencer = (id: string | number) =>
 		this.instance.get<GetInfluencerResBody>(`/admin/influencers/${id}`);

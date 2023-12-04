@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@tanstack/svelte-table':
+    specifier: ^8.10.7
+    version: 8.10.7(svelte@4.0.5)
   '@types/node':
     specifier: ^20.10.0
     version: 20.10.0
@@ -456,6 +459,21 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@tanstack/svelte-table@8.10.7(svelte@4.0.5):
+    resolution: {integrity: sha512-nHHBYAzXZKs5GseAEJJFyK8EP5arHplHJc3a1X50oUv/xnE10EY/DhLV0YSNigIbNEbDcj+AsTg/6OtamIARQg==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      svelte: ^4.0.0 || ^3.49.0
+    dependencies:
+      '@tanstack/table-core': 8.10.7
+      svelte: 4.0.5
+    dev: false
+
+  /@tanstack/table-core@8.10.7:
+    resolution: {integrity: sha512-KQk5OMg5OH6rmbHZxuNROvdI+hKDIUxANaHlV+dPlNN7ED3qYQ/WkpY2qlXww1SIdeMlkIhpN/2L00rof0fXFw==}
+    engines: {node: '>=12'}
+    dev: false
 
   /@types/cookie@0.5.4:
     resolution: {integrity: sha512-7z/eR6O859gyWIAjuvBWFzNURmf2oPBmJlfVWkwehU5nzIyjwBsTh7WMmEEV4JFnHuQ3ex4oyTvfKzcyJVDBNA==}
