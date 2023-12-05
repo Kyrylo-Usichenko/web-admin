@@ -43,9 +43,6 @@
 		const orderTypeParam = ordersType ? `?ordersType=${ordersType}` : '';
 		if (!ordersType) return alert('Something went wrong');
 		const url = `/orders/${ordersType}/${id}${orderTypeParam}`;
-		console.log(url);
-		console.log(cellInfo);
-
 		goto(url);
 	};
 
