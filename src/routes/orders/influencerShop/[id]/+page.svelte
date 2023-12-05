@@ -58,7 +58,6 @@
 		loading = true;
 		try {
 			const res = await aiApi.getInfluencerShopOrder(data.id);
-			console.log(res.data.data);
 			order = res.data.data;
 
 			scents = {
@@ -120,7 +119,6 @@
 			secondary2: secindaryScents2
 		};
 	});
-	$: console.log(allScents);
 </script>
 
 <main class="wrapper">

@@ -58,7 +58,6 @@
 			// 		journey = JSON.parse(item.value);
 			// 	}
 			// });
-			console.log(res.data.data);
 
 			scents = {
 				main: order.attributes?.scents.main || '',

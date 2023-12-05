@@ -58,7 +58,6 @@
 		try {
 			const res = await aiApi.getDiyOrder(data.id);
 			order = res.data.data;
-			console.log(res.data.data);
 
 			scents = {
 				main: order.attributes?.scents.main || '',

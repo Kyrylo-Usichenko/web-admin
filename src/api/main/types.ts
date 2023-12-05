@@ -37,4 +37,11 @@ export type GetInfluencerOrderResBody = {
 	};
 };
 
+export type GetOrdersReqBody = {
+	ordersType?: string;
+	limit: number;
+	offset: number;
+	search: string;
+};
+
 export type { SetScentsReqBodyScents };

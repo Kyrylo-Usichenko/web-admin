@@ -2,7 +2,7 @@
 	import { aiApi } from '$api/index';
 	import { goto } from '$app/navigation';
 	import Loader from '$lib/shared/loader/Loader.svelte';
-	import Table from '$lib/table/Table.svelte';
+	import Table from '$lib/shared/table/Table.svelte';
 	import type { Influencer } from '$types/customerOrders';
 	import { onMount } from 'svelte';
 	import { defaultColumns } from './utils';
@@ -52,6 +52,7 @@
 	};
 
 	const onInputChange = () => {
+		page = 1;
 		handlePageChange();
 	};
 
@@ -73,7 +74,7 @@
 <div class="asdasd">
 	{#if loading}
 		<Loader />
-	{:else}
+	{:else if tableData}
 		<input
 			type="search"
 			bind:value={search}
@@ -92,12 +93,15 @@
 				};
 			})}
 			columns={defaultColumns}
-			{page}
-			{onNextClick}
-			{onPrevClick}
-			{offset}
-			{total}
-			{onPageChange}
+			pagination={{
+				page,
+				onNextClick,
+				onPrevClick,
+				offset,
+				total,
+				limit,
+				onPageChange
+			}}
 			onRowClick={onOrderClick}
 		/>
 	{/if}

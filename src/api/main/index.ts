@@ -6,12 +6,12 @@ import type {
 	GetOrderResBody,
 	GetOrdersResBody,
 	GetScentsResBody,
-	GetShopOrder,
-	OrderType
+	GetShopOrder
 } from '../../types/customerOrders';
 import HttpClient from '../http/http';
 import type {
 	GetInfluencerOrderResBody,
+	GetOrdersReqBody,
 	SetInfluencerDiyScentsReqBody,
 	SetInfluencerScentsReqBody,
 	SetScentsReqBody,
@@ -38,8 +38,13 @@ class Ai extends HttpClient {
 	public getInfluencerOrder = (id: string) =>
 		this.instance.get<GetInfluencerOrderResBody>(`/admin/influencer-store-orders/order/${id}`);
 
-	public getOrders = (orderType: OrderType) =>
-		this.instance.get<GetOrdersResBody>(`/admin/orders?orderType=${orderType}`);
+	public getOrders = ({ ordersType, limit, offset, search }: GetOrdersReqBody) => {
+		const serachParam = search === '' ? `` : `&search=${search}`;
+		const orderTypeParam = ordersType ? `&orderType=${ordersType}` : ``;
+		return this.instance.get<GetOrdersResBody>(
+			`/admin/orders?limit=${limit}&offset=${offset}${serachParam}${orderTypeParam}`
+		);
+	};
 
 	public getOrder = (orderId: string | number) =>
 		this.instance.get<GetOrderResBody>(`/admin/orders/${orderId}`);

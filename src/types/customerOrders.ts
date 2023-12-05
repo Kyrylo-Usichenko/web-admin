@@ -6,6 +6,7 @@ export type LabelType = 'GENERIC' | 'CUSTOM';
 
 export type GetOrdersResBody = {
 	orders: CustomersOrders;
+	total: number;
 };
 
 export type CustomerOrder = {
