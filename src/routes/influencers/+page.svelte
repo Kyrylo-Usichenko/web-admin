@@ -4,6 +4,7 @@
 	import Loader from '$lib/shared/loader/Loader.svelte';
 	import Table from '$lib/shared/table/Table.svelte';
 	import type { Influencer } from '$types/customerOrders';
+	import { navigate } from '$utils/navigate';
 	import { onMount } from 'svelte';
 	import { defaultColumns } from './utils';
 
@@ -20,7 +21,11 @@
 			id: string;
 		};
 	}) => {
-		goto(`/influencers/${cellInfo.original.id}`);
+		const redirect = navigate({
+			currentPage: 'influencers',
+			id: cellInfo.original.id
+		});
+		if (redirect.type === 'redirect') return goto(redirect.to);
 	};
 
 	const setInfluencers = async () => {

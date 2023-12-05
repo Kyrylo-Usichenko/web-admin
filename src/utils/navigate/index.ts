@@ -33,6 +33,13 @@ export const navigate = (data: NavigateData): NavigateRes => {
 			type: 'none'
 		};
 	}
+	if (currentPage === 'influencers') {
+		const { id } = data;
+		return {
+			type: 'redirect',
+			to: routes.influencer(id)
+		};
+	}
 
 	return asertNever(currentPage, 'Invalid state');
 };

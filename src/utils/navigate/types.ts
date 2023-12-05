@@ -8,6 +8,10 @@ export type NavigateData =
 			currentPage: 'orders';
 			id: string | number;
 			orderType: OrderType;
+	  }
+	| {
+			currentPage: 'influencers';
+			id: string | number;
 	  };
 
 export type RedirectRes = {
