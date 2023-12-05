@@ -1,21 +1,11 @@
 :root {
 	--main-bg-color: rgb(44, 58, 58);
 	--main-bg-color-disabled: rgb(44, 58, 58, 0.5);
-	font-family: 'JetBrains Mono', monospace !important;
 }
 
 *,
 * {
-	margin: 0;
-	padding: 0;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+	font-family: 'JetBrains Mono', monospace;
 	margin: 0;
 	padding: 0;
 }
@@ -28,13 +18,6 @@ a {
 
 button {
 	cursor: pointer;
-}
-.gridjs-td {
-	cursor: pointer;
-}
-.gridjs-footer button,
-.gridjs-head button {
-	color: black;
 }
 
 .generalTable {

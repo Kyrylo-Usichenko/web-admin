@@ -5,6 +5,7 @@
 	import Loader from '$lib/shared/loader/Loader.svelte';
 	import Table from '$lib/shared/table/Table.svelte';
 	import type { OrderType } from '$types/customerOrders';
+	import { navigate } from '$utils/navigate';
 	import { formatDate } from '$utils/time';
 	import { defaultColumns, routes } from './utils';
 	let selectedRoute = $page.data.ordersType;
@@ -27,23 +28,26 @@
 
 	const onOrderClick = (cellInfo: any) => {
 		const id = cellInfo.original.id;
-		let ordersType = null;
-		if (selectedRoute !== '') ordersType = `?ordersType=${selectedRoute}`;
+		let orderType = null;
+		if (selectedRoute !== '') orderType = selectedRoute;
 		if (selectedRoute === '') {
 			if (cellInfo.original.orderType === 'influencer_shop') {
-				ordersType = `influencerShop`;
+				orderType = `influencerShop`;
 			}
 			if (cellInfo.original.orderType === 'influencer_diy') {
-				ordersType = `influencerDiy`;
+				orderType = `influencerDiy`;
 			}
 			if (cellInfo.original.orderType === 'normal_diy') {
-				ordersType = `normalDiy`;
+				orderType = `normalDiy`;
 			}
 		}
-		const orderTypeParam = ordersType ? `?ordersType=${ordersType}` : '';
-		if (!ordersType) return alert('Something went wrong');
-		const url = `/orders/${ordersType}/${id}${orderTypeParam}`;
-		goto(url);
+
+		const redirect = navigate({
+			currentPage: 'orders',
+			id,
+			orderType
+		});
+		if (redirect.type === 'redirect') return goto(redirect.to);
 	};
 
 	const onPageChange = async (newPage: number) => {

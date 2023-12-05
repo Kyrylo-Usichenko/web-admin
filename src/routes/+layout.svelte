@@ -22,12 +22,10 @@
 	</div>
 </Container>
 
-<style global>
-	@import 'https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css';
+<style>
 	.title {
-		padding: 20px 0 0;
-		margin: 0 auto;
-		width: fit-content;
+		margin: 20px 0 0;
+		text-align: center;
 	}
 	.nav {
 		position: relative;
