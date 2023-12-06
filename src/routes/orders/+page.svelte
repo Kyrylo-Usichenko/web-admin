@@ -7,14 +7,17 @@
 	import type { OrderType } from '$types/customerOrders';
 	import { navigate } from '$utils/navigate';
 	import { formatDate } from '$utils/time';
+	import Dropdown from './components/Dropdown.svelte';
+	import type { OrderTypeName } from './types';
 	import { defaultColumns, routes } from './utils';
 	let selectedRoute = $page.data.ordersType;
 
-	let isLoading: boolean = false;
+	let isLoading: boolean = true;
 	let currentPage: number = 1;
 	let offset: number = 0;
 	let total: number = 0;
 	let search: string = '';
+	let orderTypeValue: OrderTypeName = 'All orders';
 	const limit = 50;
 	let tableData: {
 		id: number;
@@ -29,8 +32,10 @@
 	const onOrderClick = (cellInfo: any) => {
 		const id = cellInfo.original.id;
 		let orderType = null;
-		if (selectedRoute !== '') orderType = selectedRoute;
-		if (selectedRoute === '') {
+		console.log(selectedRoute);
+
+		if (selectedRoute !== '' && selectedRoute) orderType = selectedRoute;
+		if (selectedRoute === '' || !selectedRoute) {
 			if (cellInfo.original.orderType === 'influencer_shop') {
 				orderType = `influencerShop`;
 			}
@@ -52,34 +57,30 @@
 
 	const onPageChange = async (newPage: number) => {
 		currentPage = newPage;
-		setOrders({
-			ordersType: $page.data.ordersType,
-			shouldLoad: false
-		});
 	};
 
 	const onNextClick = async () => {
 		currentPage++;
-		setOrders({
-			ordersType: $page.data.ordersType,
-			shouldLoad: false
-		});
 	};
 
 	const onPrevClick = async () => {
 		currentPage--;
-		setOrders({
-			ordersType: $page.data.ordersType,
-			shouldLoad: false
-		});
 	};
 
 	const onInputChange = () => {
 		currentPage = 1;
-		setOrders({
-			ordersType: $page.data.ordersType,
-			shouldLoad: false
+	};
+
+	const onOrderTypeChange = (value: string) => {
+		currentPage = 1;
+		const newRoute = routes.find((route) => route.name === value);
+		if (!newRoute) alert('Wrong input value');
+		selectedRoute = newRoute?.ordersType;
+		const redirect = navigate({
+			currentPage: 'orders/orderTypeSelection',
+			orderType: selectedRoute
 		});
+		if (redirect.type === 'redirect') return goto(redirect.to);
 	};
 
 	const setOrders = async ({
@@ -118,40 +119,40 @@
 		}
 	};
 
-	$: setOrders({
-		ordersType: $page.data.ordersType,
-		shouldLoad: true
-	});
+	$: orderTypeValue =
+		routes.find((route) => route.ordersType === selectedRoute)?.name || 'All orders';
+
+	$: search,
+		currentPage,
+		selectedRoute,
+		setOrders({
+			ordersType: $page.data.ordersType,
+			shouldLoad: true
+		});
 </script>
 
-{#if isLoading}
-	<Loader />
-{:else}
-	<div class="filters">
-		<input
-			bind:value={search}
-			on:input={onInputChange}
-			class="input"
-			placeholder="Email or Order Name"
-			type="search"
-		/>
+<div class="filters">
+	<input
+		bind:value={search}
+		on:input={onInputChange}
+		class="input"
+		placeholder="Email or Order Name"
+		type="search"
+	/>
 
-		<div>
-			<span> Orders type: </span>
-			<select
-				bind:value={selectedRoute}
-				on:change={() => {
-					currentPage = 1;
-					const ordersTypesParam = selectedRoute ? `?ordersType=${selectedRoute}` : '';
-					goto(`/orders${ordersTypesParam}`);
-				}}
-			>
-				{#each routes as route}
-					<option value={route.ordersType}>{route.name}</option>
-				{/each}
-			</select>
-		</div>
+	<div class="order-type_wrapper">
+		<Dropdown
+			options={routes.map((route) => route.name)}
+			value={orderTypeValue}
+			onChange={onOrderTypeChange}
+		/>
 	</div>
+</div>
+{#if isLoading}
+	<div class="content">
+		<Loader />
+	</div>
+{:else}
 	<Table
 		data={tableData}
 		columns={defaultColumns}
@@ -169,12 +170,20 @@
 {/if}
 
 <style>
+	.content {
+		width: 100%;
+		position: relative;
+		height: 100%;
+	}
 	.filters {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 	}
-
+	.order-type_wrapper {
+		display: flex;
+		align-items: center;
+	}
 	.input {
 		margin: 20px 0;
 		width: 250px;

@@ -9,7 +9,7 @@
 		<h1 class="title">Scentcraft WebAdmin</h1>
 		<nav class="nav">
 			<a
-				href="/orders?ordersType=influencerShop"
+				href="/orders"
 				class:active={$page.url.pathname.includes('/orders')}
 			>
 				Orders

@@ -1,4 +1,5 @@
 import type { ColumnDef } from '@tanstack/svelte-table';
+import type { Route } from './types';
 
 export const columns = [
 	{
@@ -68,7 +69,7 @@ export const defaultColumns: ColumnDef<Person>[] = [
 
 export const routes: Route[] = [
 	{
-		name: 'All',
+		name: 'All orders',
 		path: '/orders',
 		ordersType: ''
 	},
@@ -83,13 +84,9 @@ export const routes: Route[] = [
 		ordersType: 'influencerDiy'
 	},
 	{
-		name: 'DIY',
+		name: 'DIY orders',
 		path: '/orders?ordersType=normalDiy',
 		ordersType: 'normalDiy'
 	}
 ];
-export type Route = {
-	name: string;
-	path: string;
-	ordersType?: 'influencerShop' | 'influencerDiy' | 'normalDiy' | '';
-};
+

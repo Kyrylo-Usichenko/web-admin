@@ -10,6 +10,10 @@ export type NavigateData =
 			orderType: OrderType;
 	  }
 	| {
+			currentPage: 'orders/orderTypeSelection';
+			orderType: 'influencerShop' | 'influencerDiy' | 'normalDiy' | '';
+	  }
+	| {
 			currentPage: 'influencers';
 			id: string | number;
 	  };

@@ -33,6 +33,19 @@ export const navigate = (data: NavigateData): NavigateRes => {
 			type: 'none'
 		};
 	}
+	if (currentPage === 'orders/orderTypeSelection') {
+		const { orderType } = data;
+		if (orderType === '') {
+			return {
+				type: 'redirect',
+				to: routes.orders
+			};
+		}
+		return {
+			type: 'redirect',
+			to: routes.ordersWithType(orderType)
+		};
+	}
 	if (currentPage === 'influencers') {
 		const { id } = data;
 		return {
