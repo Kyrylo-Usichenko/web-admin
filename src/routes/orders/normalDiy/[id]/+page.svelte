@@ -128,7 +128,7 @@
 	{:else if order}
 		<h1 class="title">{order.orderName} | {order.subtotalPrice} {order.currency}</h1>
 		<div class="tags">
-			<div class="tag">{order.orderType}</div>
+			<div class="tag" style="cursor: help" title={order.orderType}>DIY order</div>
 			<div class="tag">{order.financialStatus}</div>
 			<div class="tag">{order.confirmed ? 'Confirmed' : 'Not confirmed'}</div>
 		</div>
