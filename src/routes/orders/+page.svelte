@@ -69,6 +69,10 @@
 
 	const onInputChange = () => {
 		currentPage = 1;
+		setOrders({
+			ordersType: selectedRoute,
+			shouldLoad: false
+		});
 	};
 
 	const onOrderTypeChange = (value: string) => {
@@ -122,8 +126,7 @@
 	$: orderTypeValue =
 		routes.find((route) => route.ordersType === selectedRoute)?.name || 'All orders';
 
-	$: search,
-		currentPage,
+	$: currentPage,
 		selectedRoute,
 		setOrders({
 			ordersType: $page.data.ordersType,

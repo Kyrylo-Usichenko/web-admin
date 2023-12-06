@@ -9,7 +9,7 @@
 	import { defaultColumns } from './utils';
 
 	let tableData: Influencer[] = [];
-	let loading = false;
+	let loading = true;
 	let limit = 50;
 	let offset = 0;
 	let total = 0;
@@ -77,17 +77,18 @@
 </script>
 
 <div class="asdasd">
+	<input
+		type="search"
+		bind:value={search}
+		on:input={onInputChange}
+		class="input"
+		placeholder="Email or Order Name"
+	/>
 	{#if loading}
-		<Loader />
+		<div style="position: relative;">
+			<Loader />
+		</div>
 	{:else if tableData}
-		<input
-			type="search"
-			bind:value={search}
-			on:input={onInputChange}
-			class="input"
-			placeholder="Email or Order Name"
-		/>
-
 		<Table
 			data={tableData.map((influencer) => {
 				return {
