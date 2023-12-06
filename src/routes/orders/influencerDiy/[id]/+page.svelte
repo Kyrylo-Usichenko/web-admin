@@ -18,6 +18,7 @@
 	let isSaving = false;
 	let allScents: AllScents | null = null;
 	let isGenerateClicked = false;
+	let isDiecutLoading = false;
 	let scents: {
 		main: string;
 		secScent1: string;
@@ -75,10 +76,14 @@
 
 	const generateDiecut = async () => {
 		try {
-			isGenerateClicked = true;
+			isDiecutLoading = true;
 			await aiApi.generateDiecut(data.id);
+			isGenerateClicked = true;
+			alert('Diecut generation started, please don`t click again');
 		} catch (err) {
 			console.log(err);
+		} finally {
+			isDiecutLoading = false;
 		}
 	};
 
@@ -160,6 +165,23 @@
 					<a href={order.orderStatusUrl} target="_blank"> Link </a>
 				</td>
 			</tr>
+
+			<tr>
+				<td> Diecut </td>
+				<td>
+					<div class="diecut">
+						{#if order.diecutRenderStatus === 'pending' || isGenerateClicked}
+							<span>In process</span>
+						{:else if order.diecutLink}
+							<a href={order.diecutLink} target="_blank"> Link </a>
+						{:else}
+							<span>Not generated</span>
+						{/if}
+						<Button onClick={generateDiecut} text="Generate" disabled={isDiecutLoading} />
+					</div>
+				</td>
+			</tr>
+
 			<tr>
 				<td> Processed at </td>
 				<td>
@@ -254,31 +276,6 @@
 				<Button onClick={toggleModal} text="Edit scents" />
 			</div>
 
-			<h2 class="scentsTitle">Diecut</h2>
-			<table class="table">
-				<tr>
-					<td> Link </td>
-					<td>
-						{#if order.diecutLink}
-							<a href={order.diecutLink} target="_blank"> Link </a>
-						{/if}
-					</td>
-				</tr>
-				<tr>
-					<td> Status</td>
-					<td> {isGenerateClicked ? 'pending' : order.diecutRenderStatus} </td>
-				</tr>
-			</table>
-			<div class="editWrapper">
-				{#if order.diecutRenderStatus === 'pending' || isGenerateClicked}
-					<Button onClick={generateDiecut} text="Pending" disabled />
-				{:else if order.diecutRenderStatus === 'complete'}
-					<Button onClick={generateDiecut} text="Regenerate" />
-				{:else if order.diecutRenderStatus === 'none'}
-					<Button onClick={generateDiecut} text="Generate" />
-				{/if}
-			</div>
-
 			{#if allScents}
 				<EditModal
 					{allScents}
@@ -346,6 +343,12 @@
 
 	.scentsTitle {
 		margin: 20px 0 0;
+	}
+
+	.diecut {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 	}
 	.table {
 		border-collapse: collapse;
