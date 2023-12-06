@@ -83,6 +83,9 @@ class Ai extends HttpClient {
 
 	public setShopOrderScents = (body: SetShopOrderScentsReqBody) =>
 		this.instance.put('/admin/orders/influencerShop/scents', body);
+
+	public generateDiecut = (orderId: number | string) =>
+		this.instance.put('/admin/orders/influencerDiy/diecut', { orderId });
 }
 
 export default Ai;

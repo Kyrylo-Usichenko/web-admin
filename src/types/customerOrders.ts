@@ -96,8 +96,11 @@ export type SelectedFragrance = {
 	family: string;
 	image: string;
 };
-
-export interface GetInfluencerDiyOrderData extends ShopifyOrder {
+export interface InfluencerDiyShopifyOrder extends ShopifyOrder {
+	diecutLink: string | null;
+	diecutRenderStatus: 'none' | 'pending' | 'complete';
+}
+export interface GetInfluencerDiyOrderData extends InfluencerDiyShopifyOrder {
 	attributes: {
 		allInfluencerData?: string | null;
 		journeyData?: string | null;

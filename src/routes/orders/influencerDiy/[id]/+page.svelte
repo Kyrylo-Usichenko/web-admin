@@ -17,6 +17,7 @@
 	let isModalOpened = false;
 	let isSaving = false;
 	let allScents: AllScents | null = null;
+	let isGenerateClicked = false;
 	let scents: {
 		main: string;
 		secScent1: string;
@@ -69,6 +70,15 @@
 			console.log(err);
 		} finally {
 			loading = false;
+		}
+	};
+
+	const generateDiecut = async () => {
+		try {
+			isGenerateClicked = true;
+			await aiApi.generateDiecut(data.id);
+		} catch (err) {
+			console.log(err);
 		}
 	};
 
@@ -242,6 +252,31 @@
 
 			<div class="editWrapper">
 				<Button onClick={toggleModal} text="Edit scents" />
+			</div>
+
+			<h2 class="scentsTitle">Diecut</h2>
+			<table class="table">
+				<tr>
+					<td> Link </td>
+					<td>
+						{#if order.diecutLink}
+							<a href={order.diecutLink} target="_blank"> Link </a>
+						{/if}
+					</td>
+				</tr>
+				<tr>
+					<td> Status</td>
+					<td> {isGenerateClicked ? 'pending' : order.diecutRenderStatus} </td>
+				</tr>
+			</table>
+			<div class="editWrapper">
+				{#if order.diecutRenderStatus === 'pending' || isGenerateClicked}
+					<Button onClick={generateDiecut} text="Pending" disabled />
+				{:else if order.diecutRenderStatus === 'complete'}
+					<Button onClick={generateDiecut} text="Regenerate" />
+				{:else if order.diecutRenderStatus === 'none'}
+					<Button onClick={generateDiecut} text="Generate" />
+				{/if}
 			</div>
 
 			{#if allScents}
