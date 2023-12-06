@@ -79,7 +79,7 @@ export const routes: Route[] = [
 		ordersType: 'influencerShop'
 	},
 	{
-		name: 'Influencers DIY',
+		name: 'Follower DIY',
 		path: '/orders?ordersType=influencerDiy',
 		ordersType: 'influencerDiy'
 	},

@@ -55,11 +55,6 @@
 		try {
 			const res = await aiApi.getInfluencerDiyOrder(data.id);
 			order = res.data.data;
-			// const PreJourney = res.data.data.noteAttributes.map((item) => {
-			// 	if (item.name === 'journeyData' || item.name === 'journey') {
-			// 		journey = JSON.parse(item.value);
-			// 	}
-			// });
 
 			scents = {
 				main: order.attributes?.scents.main || '',
@@ -177,7 +172,7 @@
 						{:else}
 							<span>Not generated</span>
 						{/if}
-						<Button onClick={generateDiecut} text="Generate" disabled={isDiecutLoading} />
+						<button class="generate-diecut-button" on:click={generateDiecut}> Generate </button>
 					</div>
 				</td>
 			</tr>
@@ -208,12 +203,6 @@
 			<h2 class="journeyTitle">Journey</h2>
 
 			<table class="table">
-				<tr>
-					<td> Influencer microsite </td>
-					<td>
-						{order.attributes.micrositeSlug || ''}
-					</td>
-				</tr>
 				<tr>
 					<td>Answers</td>
 					<td>
@@ -255,6 +244,50 @@
 					</td>
 				</tr>
 			</table>
+			{#if order.influencer}
+				<div style="display: flex;">
+					<h2 class="scentsTitle">Influencer</h2>
+				</div>
+
+				<table class="table">
+					<tr>
+						<td> Influencer's microsite </td>
+						<td> {order.influencer.micrositeSlug} </td>
+					</tr>
+					<tr>
+						<td> Name </td>
+						<td> {order.influencer.name} </td>
+					</tr>
+					<tr>
+						<td> Email </td>
+						<td> {order.influencer.email} </td>
+					</tr>
+					<tr>
+						<td> Contact Id </td>
+						<td>
+							<a href={`/influencers/${order.influencer.contactId}`} target="_blank">
+								{order.influencer.contactId} - Link to influencer page
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td> Instagram </td>
+						<td> {order.influencer.socialHandle} </td>
+					</tr>
+					<tr>
+						<td> Main scent </td>
+						<td> {order.influencer.scentCodes.main} </td>
+					</tr>
+					<tr>
+						<td> Secondary scent </td>
+						<td> {order.influencer.scentCodes.secondary1} </td>
+					</tr>
+					<tr>
+						<td> Secondary scent 2 </td>
+						<td> {order.influencer.scentCodes.secondary2} </td>
+					</tr>
+				</table>
+			{/if}
 
 			<h2 class="scentsTitle">Scents</h2>
 			<table class="table">
@@ -350,6 +383,13 @@
 		align-items: center;
 		justify-content: space-between;
 	}
+
+	.generate-diecut-button {
+		background: none;
+		border: none;
+		text-decoration: underline;
+	}
+
 	.table {
 		border-collapse: collapse;
 		text-overflow: ellipsis;

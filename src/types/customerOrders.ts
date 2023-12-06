@@ -99,6 +99,18 @@ export type SelectedFragrance = {
 export interface InfluencerDiyShopifyOrder extends ShopifyOrder {
 	diecutLink: string | null;
 	diecutRenderStatus: 'none' | 'pending' | 'complete';
+	influencer: {
+		contactId: number;
+		micrositeSlug: string;
+		name: string | null;
+		email: string;
+		scentCodes: {
+			main: string;
+			secondary1: string;
+			secondary2: string;
+		};
+		socialHandle: string | null;
+	} | null;
 }
 export interface GetInfluencerDiyOrderData extends InfluencerDiyShopifyOrder {
 	attributes: {
@@ -115,6 +127,7 @@ export interface GetInfluencerDiyOrderData extends InfluencerDiyShopifyOrder {
 		labelName: string;
 		labelType: LabelType;
 		selectedFragrance: SelectedFragrance;
+
 		scents: {
 			main: string;
 			secondary: string;
