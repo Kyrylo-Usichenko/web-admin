@@ -179,7 +179,9 @@
 	}
 
 	.scentsTitle {
-		margin: 20px 0 0;
+		margin: 40px 0 8px;
+		font-size: 20px;
+		font-weight: 600;
 	}
 
 	.table {

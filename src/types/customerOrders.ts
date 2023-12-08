@@ -172,7 +172,24 @@ export interface GetDiyOrderData extends ShopifyOrder {
 export type GetShopOrder = {
 	data: GetShopOrderData;
 };
-export interface GetShopOrderData extends ShopifyOrder {
+
+export interface FollowerShopifyOrder extends ShopifyOrder {
+	diecutLink: string | null;
+	diecutRenderStatus: 'none' | 'pending' | 'complete';
+	influencer: {
+		contactId: number;
+		micrositeSlug: string;
+		name: string | null;
+		email: string;
+		scentCodes: {
+			main: string;
+			secondary1: string;
+			secondary2: string;
+		};
+		socialHandle: string | null;
+	} | null;
+}
+export interface GetShopOrderData extends FollowerShopifyOrder {
 	attributes: {
 		allInfluencerData?: string | null;
 		journeyData?: string | null;

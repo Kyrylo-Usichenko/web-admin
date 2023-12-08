@@ -175,16 +175,12 @@
 			<h2 class="journeyTitle">Purchase</h2>
 
 			<table class="table">
-				<tr>
-					<td>Influencer microsite</td>
-					<td>{order.attributes.micrositeSlug || ''}</td>
-				</tr>
-				<tr>
+				<!-- <tr>
 					<td>Mockup</td>
 					<td>
 						<a href={order.attributes.selectedMockup} target="_blank"> Link </a>
 					</td>
-				</tr>
+				</tr> -->
 				<tr>
 					<td> Bottle size </td>
 					<td>
@@ -192,6 +188,50 @@
 					</td>
 				</tr>
 			</table>
+			{#if order.influencer}
+				<div style="display: flex;">
+					<h2 class="scentsTitle">Influencer</h2>
+				</div>
+
+				<table class="table">
+					<tr>
+						<td> Influencer's microsite </td>
+						<td> {order.influencer.micrositeSlug} </td>
+					</tr>
+					<tr>
+						<td> Name </td>
+						<td> {order.influencer.name} </td>
+					</tr>
+					<tr>
+						<td> Email </td>
+						<td> {order.influencer.email} </td>
+					</tr>
+					<tr>
+						<td> Contact Id </td>
+						<td>
+							<a href={`/influencers/${order.influencer.contactId}`} target="_blank">
+								{order.influencer.contactId}
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td> Instagram </td>
+						<td> {order.influencer.socialHandle} </td>
+					</tr>
+					<tr>
+						<td> Main scent </td>
+						<td> {order.influencer.scentCodes.main} </td>
+					</tr>
+					<tr>
+						<td> Secondary scent </td>
+						<td> {order.influencer.scentCodes.secondary1} </td>
+					</tr>
+					<tr>
+						<td> Secondary scent 2 </td>
+						<td> {order.influencer.scentCodes.secondary2} </td>
+					</tr>
+				</table>
+			{/if}
 			<h2 class="scentsTitle">Scents</h2>
 			<table class="table">
 				<tr>
@@ -268,7 +308,9 @@
 		gap: 5px;
 	}
 	.journeyTitle {
-		margin: 20px 0 0;
+		margin: 40px 0 8px;
+		font-size: 20px;
+		font-weight: 600;
 	}
 	.tag {
 		margin: 5px 0 0;
@@ -291,7 +333,9 @@
 		margin: 10px 0 0;
 	}
 	.scentsTitle {
-		margin: 20px 0 0;
+		margin: 40px 0 8px;
+		font-size: 20px;
+		font-weight: 600;
 	}
 	.table {
 		border-collapse: collapse;

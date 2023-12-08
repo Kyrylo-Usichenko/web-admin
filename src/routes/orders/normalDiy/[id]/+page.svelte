@@ -208,12 +208,12 @@
 					<td>Bottle Size</td>
 					<td>{order.attributes.bottleSize}</td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<td>Selected mockup</td>
 					<td>
 						<a href={order.attributes.selectedMockup} target="_blank"> Link </a>
 					</td>
-				</tr>
+				</tr> -->
 			</table>
 			<h2 class="scentsTitle">Scents</h2>
 			<table class="table">
@@ -276,7 +276,9 @@
 		gap: 5px;
 	}
 	.journeyTitle {
-		margin: 20px 0 0;
+		margin: 40px 0 8px;
+		font-size: 20px;
+		font-weight: 600;
 	}
 	.tag {
 		margin: 5px 0 0;
@@ -300,7 +302,9 @@
 	}
 
 	.scentsTitle {
-		margin: 20px 0 0;
+		margin: 40px 0 8px;
+		font-size: 20px;
+		font-weight: 600;
 	}
 	.table {
 		border-collapse: collapse;

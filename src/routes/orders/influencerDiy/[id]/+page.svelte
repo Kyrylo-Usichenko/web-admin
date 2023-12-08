@@ -237,12 +237,12 @@
 					<td>Bottle Size</td>
 					<td>{order.attributes.bottleSize}</td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<td>Selected mockup</td>
 					<td>
 						<a href={order.attributes.selectedMockup} target="_blank"> Link </a>
 					</td>
-				</tr>
+				</tr> -->
 			</table>
 			{#if order.influencer}
 				<div style="display: flex;">
@@ -266,7 +266,7 @@
 						<td> Contact Id </td>
 						<td>
 							<a href={`/influencers/${order.influencer.contactId}`} target="_blank">
-								{order.influencer.contactId} - Link to influencer page
+								{order.influencer.contactId}
 							</a>
 						</td>
 					</tr>
@@ -351,7 +351,9 @@
 		gap: 5px;
 	}
 	.journeyTitle {
-		margin: 20px 0 0;
+		margin: 40px 0 8px;
+		font-size: 20px;
+		font-weight: 600;
 	}
 	.tag {
 		margin: 5px 0 0;
@@ -375,7 +377,9 @@
 	}
 
 	.scentsTitle {
-		margin: 20px 0 0;
+		margin: 40px 0 8px;
+		font-size: 20px;
+		font-weight: 600;
 	}
 
 	.diecut {
