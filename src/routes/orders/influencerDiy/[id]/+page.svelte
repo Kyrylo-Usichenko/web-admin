@@ -292,6 +292,21 @@
 				</table>
 			{/if}
 
+		<h2 class="scentsTitle">Initial Scents</h2>
+			<table class="table">
+				<tr>
+					<td> Main </td>
+					<td>  {order.attributes.initialScents.main} </td>
+				</tr>
+				<tr>
+					<td> Secondary</td>
+					<td>  {order.attributes.initialScents.secondary1} </td>
+				</tr>
+				<tr>
+					<td> Influencer's main scent </td>
+					<td>  {order.attributes.initialScents.secondary2} </td>
+				</tr>
+			</table>
 			<h2 class="scentsTitle">Scents</h2>
 			<table class="table">
 				<tr>
@@ -303,7 +318,7 @@
 					<td> {scents?.secScent1} </td>
 				</tr>
 				<tr>
-					<td> Influencer scent</td>
+					<td> Influencer's main scent</td>
 					<td> {scents?.secScent2} </td>
 				</tr>
 			</table>

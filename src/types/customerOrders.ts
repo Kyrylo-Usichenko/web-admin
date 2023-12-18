@@ -45,6 +45,11 @@ export type InfluencerDetails = {
 	email: string | null;
 	firstName: string | null;
 	lastName: string | null;
+	initialScents: {
+		main: string;
+		secondary1: string;
+		secondary2: string;
+	};
 	scentCodes: {
 		main: string;
 		secondary1: string;
@@ -127,6 +132,11 @@ export interface GetInfluencerDiyOrderData extends InfluencerDiyShopifyOrder {
 		labelName: string;
 		labelType: LabelType;
 		selectedFragrance: SelectedFragrance;
+		initialScents: {
+			main: string;
+			secondary1: string;
+			secondary2: string;
+		};
 
 		scents: {
 			main: string;
@@ -197,6 +207,11 @@ export interface GetShopOrderData extends FollowerShopifyOrder {
 		micrositeSlug: string;
 		email: string;
 		bottleSize: BottleSize;
+		initialScents: {
+			main: string;
+			secondary1: string;
+			secondary2: string;
+		};
 		scents: {
 			main: string;
 			secondary1: string;

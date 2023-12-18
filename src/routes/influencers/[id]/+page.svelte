@@ -136,7 +136,21 @@
 				<td>{influencer.socialHandle}</td>
 			</tr>
 		</table>
-
+		<h2 class="scentsTitle">Initial scents</h2>
+		<table class="table">
+			<tr>
+				<td>Main</td>
+				<td> {influencer.initialScents.main || ''}</td>
+			</tr>
+			<tr>
+				<td>Secondary1</td>
+				<td> {influencer.initialScents.secondary1 || ''}</td>
+			</tr>
+			<tr>
+				<td>Secondary2</td>
+				<td> {influencer.initialScents.secondary2 || ''}</td>
+			</tr>
+		</table>
 		<h2 class="scentsTitle">Scents</h2>
 		<table class="table">
 			<tr>

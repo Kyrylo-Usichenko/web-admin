@@ -218,6 +218,21 @@
 					</td>
 				</tr> -->
 			</table>
+			<h2 class="scentsTitle">Initial scents</h2>
+			<table class="table">
+				<tr>
+					<td> Main </td>
+					<td> {scents.main} </td>
+				</tr>
+				<tr>
+					<td> Secondary</td>
+					<td> {scents.secScent1} </td>
+				</tr>
+				<tr>
+					<td> Secondary 2</td>
+					<td> {scents.secScent2} </td>
+				</tr>
+			</table>
 			<h2 class="scentsTitle">Scents</h2>
 			<table class="table">
 				<tr>
