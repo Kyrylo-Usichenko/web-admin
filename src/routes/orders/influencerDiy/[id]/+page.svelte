@@ -140,11 +140,14 @@
 		<h1 class="title">{order.orderName} | {order.subtotalPrice} {order.currency}</h1>
 		<div class="tags">
 			<div class="tag" style="cursor: help" title={order.orderType}>Follower's DIY</div>
-			<div class="tag">{order.financialStatus}</div>
 			<div class="tag">{order.confirmed ? 'Confirmed' : 'Not confirmed'}</div>
 		</div>
 
 		<table class="table mainInfo">
+			<tr>
+				<td>Email</td>
+				<td>{order.financialStatus}</td>
+			</tr>
 			<tr>
 				<td>Email</td>
 				<td>{order.customerEmail}</td>
