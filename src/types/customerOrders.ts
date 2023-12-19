@@ -134,8 +134,8 @@ export interface GetInfluencerDiyOrderData extends InfluencerDiyShopifyOrder {
 		selectedFragrance: SelectedFragrance;
 		initialScents: {
 			main: string;
-			secondary1: string;
-			secondary2: string;
+			secondary: string;
+			influencerScent: string;
 		};
 
 		scents: {

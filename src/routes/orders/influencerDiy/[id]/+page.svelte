@@ -145,7 +145,7 @@
 
 		<table class="table mainInfo">
 			<tr>
-				<td>Email</td>
+				<td>Status</td>
 				<td>{order.financialStatus}</td>
 			</tr>
 			<tr>
@@ -296,15 +296,15 @@
 			<table class="table">
 				<tr>
 					<td> Main </td>
-					<td>  {order.attributes.initialScents.main} </td>
+					<td>  {order.attributes.initialScents.main || ''} </td>
 				</tr>
 				<tr>
 					<td> Secondary</td>
-					<td>  {order.attributes.initialScents.secondary1} </td>
+					<td>  {order.attributes.initialScents.secondary || ''} </td>
 				</tr>
 				<tr>
 					<td> Influencer's main scent </td>
-					<td>  {order.attributes.initialScents.secondary2} </td>
+					<td>  {order.attributes.initialScents.influencerScent || ''} </td>
 				</tr>
 			</table>
 			<h2 class="scentsTitle">Scents</h2>
