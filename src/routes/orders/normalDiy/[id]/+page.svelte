@@ -192,6 +192,24 @@
 					</td>
 				</tr>
 				<tr>
+					<td>Pyramid</td>
+					<td>
+						<p>
+							Top: {order.attributes.selectedFragrance?.pyramid?.top.map((note) => note).join(', ')}
+						</p>
+						<p>
+							Middle: {order.attributes.selectedFragrance?.pyramid?.middle
+								.map((note) => note)
+								.join(', ')}
+						</p>
+						<p>
+							Order: {order.attributes.selectedFragrance?.pyramid?.base
+								.map((note) => note)
+								.join(', ')}
+						</p>
+					</td>
+				</tr>
+				<tr>
 					<td>Label type</td>
 					<td>
 						{order.attributes.labelType}

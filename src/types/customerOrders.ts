@@ -100,6 +100,11 @@ export type SelectedFragrance = {
 	gender: string;
 	family: string;
 	image: string;
+	pyramid: {
+		top: string[];
+		middle: string[];
+		base: string[];
+	};
 };
 export interface InfluencerDiyShopifyOrder extends ShopifyOrder {
 	diecutLink: string | null;

@@ -221,6 +221,24 @@
 					</td>
 				</tr>
 				<tr>
+					<td>Pyramid</td>
+					<td>
+						<p>
+							Top: {order.attributes.selectedFragrance?.pyramid?.top.map((note) => note).join(', ')}
+						</p>
+						<p>
+							Middle: {order.attributes.selectedFragrance?.pyramid?.middle
+								.map((note) => note)
+								.join(', ')}
+						</p>
+						<p>
+							Order: {order.attributes.selectedFragrance?.pyramid?.base
+								.map((note) => note)
+								.join(', ')}
+						</p>
+					</td>
+				</tr>
+				<tr>
 					<td>Label type</td>
 					<td>
 						{order.attributes.labelType}
@@ -292,19 +310,19 @@
 				</table>
 			{/if}
 
-		<h2 class="scentsTitle">Initial Scents</h2>
+			<h2 class="scentsTitle">Initial Scents</h2>
 			<table class="table">
 				<tr>
 					<td> Main </td>
-					<td>  {order.attributes.initialScents.main || ''} </td>
+					<td> {order.attributes.initialScents.main || ''} </td>
 				</tr>
 				<tr>
 					<td> Secondary</td>
-					<td>  {order.attributes.initialScents.secondary || ''} </td>
+					<td> {order.attributes.initialScents.secondary || ''} </td>
 				</tr>
 				<tr>
 					<td> Influencer's main scent </td>
-					<td>  {order.attributes.initialScents.influencerScent || ''} </td>
+					<td> {order.attributes.initialScents.influencerScent || ''} </td>
 				</tr>
 			</table>
 			<h2 class="scentsTitle">Scents</h2>
