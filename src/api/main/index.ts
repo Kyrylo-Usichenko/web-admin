@@ -86,6 +86,8 @@ class Ai extends HttpClient {
 
 	public generateDiecut = (orderId: number | string) =>
 		this.instance.put('/admin/orders/influencerDiy/diecut', { orderId });
+	public saveDiecut = (formData: FormData): Promise<string> =>
+		this.instance.postForm('/admin/upload-diecut', formData);
 }
 
 export default Ai;

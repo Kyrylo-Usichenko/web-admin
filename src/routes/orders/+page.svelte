@@ -127,7 +127,6 @@
 		routes.find((route) => route.ordersType === selectedRoute)?.name || 'All orders';
 
 	$: currentPage,
-		selectedRoute,
 		setOrders({
 			ordersType: $page.data.ordersType,
 			shouldLoad: true

@@ -41,21 +41,31 @@ export type GetInfluencerResBody = {
 };
 
 export type InfluencerDetails = {
-	micrositeSlug: string | null;
-	email: string | null;
-	firstName: string | null;
-	lastName: string | null;
-	initialScents: {
-		main: string;
-		secondary1: string;
-		secondary2: string;
+	// shopify: {};
+	info: {
+		email: string | null;
+		firstName: string | null;
+		lastName: string | null;
+		socialHandle: string;
 	};
-	scentCodes: {
-		main: string;
-		secondary1: string;
-		secondary2: string;
+	journey: {
+		gender: Gender;
+		time: Time;
+		mode: Mood;
+		mood: Mood;
+		fragrance: SelectedFragrance;
+		micrositeSlug: string | null;
+		initialScents: {
+			main: string;
+			secondary1: string;
+			secondary2: string;
+		};
+		scentCodes: {
+			main: string;
+			secondary1: string;
+			secondary2: string;
+		};
 	};
-	socialHandle: string;
 };
 
 export type GetScentsResBody = {
@@ -93,6 +103,7 @@ export type ShopifyOrder = {
 	createdAt: string;
 	processedAt: string;
 	confirmed: boolean;
+	diecutLink: string | null;
 };
 
 export type SelectedFragrance = {

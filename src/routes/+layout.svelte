@@ -1,5 +1,6 @@
 <script>
 	import { page } from '$app/stores';
+	import 'toastify-js/src/toastify.css';
 	import Container from './../lib/shared/container/Container.svelte';
 	import './../styles/index.css';
 </script>
@@ -8,12 +9,7 @@
 	<div>
 		<h1 class="title">Scentcraft WebAdmin</h1>
 		<nav class="nav">
-			<a
-				href="/orders"
-				class:active={$page.url.pathname.includes('/orders')}
-			>
-				Orders
-			</a>
+			<a href="/orders" class:active={$page.url.pathname.includes('/orders')}> Orders </a>
 			<a href="/influencers" class:active={$page.url.pathname.includes('/influencers')}>
 				Influencers
 			</a>

@@ -99,9 +99,9 @@
 				secondary2: secindaryScents2
 			};
 			scents = {
-				main: influencer.scentCodes?.main || '',
-				secScent1: influencer.scentCodes?.secondary1 || '',
-				secScent2: influencer.scentCodes?.secondary2 || ''
+				main: influencer.journey?.scentCodes?.main || '',
+				secScent1: influencer.journey?.scentCodes?.secondary1 || '',
+				secScent2: influencer.journey?.scentCodes?.secondary2 || ''
 			};
 		} catch (err) {
 			console.log(err);
@@ -118,74 +118,124 @@
 		</div>
 	{:else if influencer}
 		<h1>Influencer contactId: {data.id}</h1>
+
 		<table class="table">
+			<h2 class="scentsTitle">Influencer's info</h2>
 			<tr>
-				<td>Microsite</td>
-				<td>{influencer.micrositeSlug}</td>
+				<td>Name</td>
+				<td
+					>{`${influencer.info.firstName?.trim() || ''}  ${
+						influencer.info.lastName?.trim() || ''
+					}`}</td
+				>
 			</tr>
 			<tr>
 				<td>Email</td>
-				<td>{influencer.email}</td>
-			</tr>
-			<tr>
-				<td>Name</td>
-				<td>{`${influencer.firstName?.trim() || ''}  ${influencer.lastName?.trim() || ''}`}</td>
+				<td>{influencer.info.email}</td>
 			</tr>
 			<tr>
 				<td>Social Handle</td>
-				<td>{influencer.socialHandle}</td>
+				<td>{influencer.info.socialHandle}</td>
 			</tr>
 		</table>
-		<h2 class="scentsTitle">Initial scents</h2>
-		<table class="table">
-			<tr>
-				<td>Main</td>
-				<td> {influencer.initialScents.main || ''}</td>
-			</tr>
-			<tr>
-				<td>Secondary1</td>
-				<td> {influencer.initialScents.secondary1 || ''}</td>
-			</tr>
-			<tr>
-				<td>Secondary2</td>
-				<td> {influencer.initialScents.secondary2 || ''}</td>
-			</tr>
-		</table>
+		{#if influencer.journey}
+			<h2 class="scentsTitle">Journey</h2>
+			<table class="table">
+				<tr>
+					<td>Answers</td>
+					<td>
+						{influencer.journey.gender} / {influencer.journey.time} / {influencer.journey.mode ||
+							influencer.journey.mood ||
+							''}
+					</td>
+				</tr>
+				<tr>
+					<td>Fragrance</td>
+					<td>
+						{influencer.journey.fragrance.name} / {influencer.journey.fragrance.family}
+						/ {influencer.journey.fragrance.gender}
+						<a href={influencer.journey.fragrance.image} target="_blank">Image link</a>
+					</td>
+				</tr>
+				<tr>
+					<td>Pyramid</td>
+					<td>
+						<p>
+							Top: {influencer.journey.fragrance.pyramid?.top.map((note) => note).join(', ') || ''}
+						</p>
+						<p>
+							Middle: {influencer.journey.fragrance.pyramid?.middle
+								.map((note) => note)
+								.join(', ') || ''}
+						</p>
+						<p>
+							Order: {influencer.journey.fragrance.pyramid?.base.map((note) => note).join(', ') ||
+								''}
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<td>Microsite</td>
+					<td>
+						{influencer.journey.micrositeSlug}
+					</td>
+				</tr>
+			</table>
+		{/if}
+		{#if influencer.journey.initialScents}
+			<h2 class="scentsTitle">Initial scents</h2>
+			<table class="table">
+				<tr>
+					<td>Main</td>
+					<td> {influencer.journey.initialScents.main || ''}</td>
+				</tr>
+				<tr>
+					<td>Secondary1</td>
+					<td> {influencer.journey.initialScents.secondary1 || ''}</td>
+				</tr>
+				<tr>
+					<td>Secondary2</td>
+					<td> {influencer.journey.initialScents.secondary2 || ''}</td>
+				</tr>
+			</table>
+		{/if}
+
 		<h2 class="scentsTitle">Scents</h2>
 		<table class="table">
 			<tr>
 				<td>Main</td>
-				<td>{scents.main}</td>
+				<td>{scents?.main}</td>
 			</tr>
 			<tr>
 				<td>Secondary1</td>
-				<td>{scents.secScent1}</td>
+				<td>{scents?.secScent1}</td>
 			</tr>
 			<tr>
 				<td>Secondary2</td>
-				<td>{scents.secScent2}</td>
+				<td>{scents?.secScent2}</td>
 			</tr>
 		</table>
+
 		<div class="editWrapper">
 			<Button onClick={toggleModal} text="Edit scent" />
 		</div>
-
-		{#if allScents}
-			<EditModal
-				{allScents}
-				{toggleModal}
-				scents={{
-					main: scents.main,
-					secondary1: scents.secScent1,
-					secondary2: scents.secScent2
-				}}
-				onSave={saveScents}
-				isLoading={isSaving}
-				isOpened={isModalOpened}
-			/>
-		{/if}
 	{/if}
 </main>
+
+{#if allScents}
+	<EditModal
+		{allScents}
+		{toggleModal}
+		scents={{
+			main: scents.main,
+			secondary1: scents.secScent1,
+			secondary2: scents.secScent2
+		}}
+		onSave={saveScents}
+		isLoading={isSaving}
+		isOpened={isModalOpened}
+	/>
+{/if}
 
 <style>
 	.editWrapper {

@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { aiApi } from '$api/index.js';
-	import Alert from '$lib/shared/alert/Alert.svelte';
+	import BrokenOrder from '$lib/shared/brokenOrder/BrokenOrder.svelte';
 	import Button from '$lib/shared/button/Button.svelte';
 	import Loader from '$lib/shared/loader/Loader.svelte';
+	import DiecutModal from '$lib/shared/modals/DiecutModal.svelte';
 	import EditModal from '$lib/shared/modals/EditScentsModal.svelte';
 	import type { GetShopOrderData } from '$types/customerOrders.js';
 	import type { AllScents } from '$types/index.js';
 	import { formatDate, relativeDate } from '$utils/time.js';
 	import { onMount } from 'svelte';
-	import JSONTree from 'svelte-json-tree';
+	import Toastify from 'toastify-js';
 
 	export let data;
 
@@ -18,6 +19,8 @@
 	let isModalOpened: boolean = false;
 	let isSaving: boolean = false;
 	let allScents: AllScents | null = null;
+	let isDiecutSaving = false;
+	let isDiecutModalOpened = false;
 	let scents: {
 		main: string;
 		secScent1: string;
@@ -30,6 +33,32 @@
 
 	const toggleModal = () => {
 		isModalOpened = !isModalOpened;
+	};
+	const toggleDiecutModal = () => {
+		isDiecutModalOpened = !isDiecutModalOpened;
+	};
+
+	const saveDiecut = async (diecut: File) => {
+		isDiecutSaving = true;
+		try {
+			const form = new FormData();
+			form.append('file', diecut);
+			form.append('orderId', data.id);
+			const newDiecut = await aiApi.saveDiecut(form);
+			isDiecutModalOpened = false;
+			if (order) order.diecutLink = newDiecut;
+		} catch (err) {
+			Toastify({
+				text: 'Something went wrong',
+				duration: 3000,
+				close: true,
+				gravity: 'top',
+				position: 'center',
+				stopOnFocus: true
+			}).showToast();
+		} finally {
+			isDiecutSaving = false;
+		}
 	};
 
 	const saveScents = async (scentsToSave: {
@@ -61,9 +90,9 @@
 			order = res.data.data;
 
 			scents = {
-				main: order.attributes?.scents.main || '',
-				secScent1: order.attributes?.scents.secondary1 || '',
-				secScent2: order.attributes?.scents.secondary2 || ''
+				main: order.attributes?.scents?.main || '',
+				secScent1: order.attributes?.scents?.secondary1 || '',
+				secScent2: order.attributes?.scents?.secondary2 || ''
 			};
 		} catch (err) {
 			console.log(err);
@@ -154,6 +183,19 @@
 				</td>
 			</tr>
 			<tr>
+				<td> Diecut </td>
+				<td>
+					<div class="diecut">
+						{#if order.diecutLink}
+							<a href={order.diecutLink} target="_blank"> Link </a>
+						{:else}
+							<span>No diecut</span>
+						{/if}
+						<button class="generate-diecut-button" on:click={toggleDiecutModal}> Upload </button>
+					</div>
+				</td>
+			</tr>
+			<tr>
 				<td> Processed at </td>
 				<td>
 					{relativeDate(order.processedAt)}
@@ -239,15 +281,15 @@
 			<table class="table">
 				<tr>
 					<td> Influencer's main scent </td>
-					<td> {order.attributes.initialScents.main} </td>
+					<td> {order.attributes.initialScents?.main || ''} </td>
 				</tr>
 				<tr>
 					<td> Influencer's secondary scent</td>
-					<td> {order.attributes.initialScents.secondary1} </td>
+					<td> {order.attributes.initialScents?.secondary1 || ''} </td>
 				</tr>
 				<tr>
 					<td> Influencer's secondary scent 2</td>
-					<td> {order.attributes.initialScents.secondary2} </td>
+					<td> {order.attributes.initialScents?.secondary2 || ''} </td>
 				</tr>
 			</table>
 			<h2 class="scentsTitle">Scents</h2>
@@ -284,37 +326,16 @@
 				/>
 			{/if}
 		{:else}
-			<Alert>
-				<p>Looks like we cannot process this order.</p>
-				<p>This order is old or was created not by our scentcraft api</p>
-				<p>You can see order just with JSON format below</p>
-			</Alert>
-			<div
-				style="
-				--json-tree-string-color: #cb3f41;
-				--json-tree-symbol-color: #cb3f41;--json-tree-boolean-color: #112aa7;--json-tree-function-color: #112aa7;--json-tree-number-color: #3029cf;--json-tree-label-color: #871d8f;--json-tree-property-color: #000000;--json-tree-arrow-color: #727272;--json-tree-operator-color: #727272;--json-tree-null-color: #8d8d8d;--json-tree-undefined-color: #8d8d8d;--json-tree-date-color: #8d8d8d;--json-tree-internal-color: grey;--json-tree-regex-color: #cb3f41;/* position */--json-tree-li-indentation: 1em;--json-tree-li-line-height: 1.3;/* font */--json-tree-font-size: 16px;
-				--json-tree-font-family: 'Courier New', Courier, monospace;"
-			>
-				<JSONTree defaultExpandedLevel={1} value={order} />
-			</div>
-
-			{#if allScents}
-				<EditModal
-					{allScents}
-					{toggleModal}
-					scents={{
-						main: scents.main,
-						secondary1: scents.secScent1,
-						secondary2: scents.secScent2
-					}}
-					onSave={saveScents}
-					isLoading={isSaving}
-					isOpened={isModalOpened}
-				/>
-			{/if}
+			<BrokenOrder {order} />
 		{/if}
 	{/if}
 </main>
+<DiecutModal
+	isOpened={isDiecutModalOpened}
+	toggleModal={toggleDiecutModal}
+	onSave={saveDiecut}
+	isLoading={isDiecutSaving}
+/>
 
 <style>
 	.title {
@@ -354,6 +375,18 @@
 		margin: 40px 0 8px;
 		font-size: 20px;
 		font-weight: 600;
+	}
+
+	.diecut {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.generate-diecut-button {
+		background: none;
+		border: none;
+		text-decoration: underline;
 	}
 	.table {
 		border-collapse: collapse;

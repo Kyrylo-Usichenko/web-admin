@@ -2,7 +2,7 @@
 	import type { SetScentsReqBodyScents } from '$api/main/types';
 	import Button from '$lib/shared/button/Button.svelte';
 	import Modal from '$lib/shared/modal/Modal.svelte';
-	import type { AllScents, Scents } from '../../../routes/influencers/[id]/components/types';
+	import type { AllScents, Scents } from '$types/index';
 	import { findScent } from '../../../routes/influencers/[id]/components/utils';
 
 	export let allScents: AllScents;
@@ -32,33 +32,41 @@
 </script>
 
 <Modal {toggleModal} {isOpened} isClosable={!isLoading}>
-	<p>New You</p>
-	<select bind:value={scent1} class="select">
-		{#each allScents.main as scent}
-			<option value={scent}>
-				({scent.code}) {scent.name} [{scent.quantity}]
-			</option>{/each}
-	</select>
-	<select bind:value={scent2} class="select">
-		{#each allScents.secondary1 as scent}
-			<option value={scent}>
-				({scent.code}) {scent.name} [{scent.quantity}]
-			</option>{/each}
-	</select>
-	<select bind:value={scent3} class="select">
-		{#each allScents.secondary2 as scent}
-			<option value={scent}>
-				({scent.code}) {scent.name} [{scent.quantity}]
-			</option>
-		{/each}
-	</select>
+	<div class="inner">
+		<select bind:value={scent1} class="select">
+			{#each allScents.main as scent}
+				<option value={scent}>
+					({scent.code}) {scent.name} [{scent.quantity}]
+				</option>{/each}
+		</select>
+		<select bind:value={scent2} class="select">
+			{#each allScents.secondary1 as scent}
+				<option value={scent}>
+					({scent.code}) {scent.name} [{scent.quantity}]
+				</option>{/each}
+		</select>
+		<select bind:value={scent3} class="select">
+			{#each allScents.secondary2 as scent}
+				<option value={scent}>
+					({scent.code}) {scent.name} [{scent.quantity}]
+				</option>
+			{/each}
+		</select>
 
-	<div class="save">
-		<Button onClick={onSaveClick} text="Save" {isLoading} />
+		<div class="save">
+			<Button onClick={onSaveClick} text="Save" {isLoading} />
+		</div>
 	</div>
 </Modal>
 
 <style>
+	.inner {
+		display: flex;
+		flex-direction: column;
+		& select {
+			border: 1px solid #000;
+		}
+	}
 	.save {
 		margin: 20px auto 0;
 		display: flex;
