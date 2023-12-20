@@ -41,7 +41,15 @@ export type GetInfluencerResBody = {
 };
 
 export type InfluencerDetails = {
-	// shopify: {};
+	shopify: {
+		price: string;
+		currency: string;
+		financialStatus: string;
+		statusUrl: string;
+		createdAt: string;
+		processedAt: string;
+		orderNumber: number;
+	};
 	info: {
 		email: string | null;
 		firstName: string | null;
@@ -65,6 +73,8 @@ export type InfluencerDetails = {
 			secondary1: string;
 			secondary2: string;
 		};
+		bottleLabel: string;
+		boxLabel: BottleSize;
 	};
 };
 

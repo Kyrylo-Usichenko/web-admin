@@ -117,10 +117,43 @@
 			<Loader />
 		</div>
 	{:else if influencer}
-		<h1>Influencer contactId: {data.id}</h1>
-
+		<h2>Shopify Id: #{influencer.shopify.orderNumber}</h2>
+		{#if influencer.shopify}
+			<h2 class="scentsTitle">Order info</h2>
+			<table class="table">
+				<tr>
+					<td> financialStatus </td>
+					<td>{influencer.shopify.financialStatus || ''}</td>
+				</tr>
+				<tr>
+					<td> Status </td>
+					<td>
+						<a href={influencer.shopify.statusUrl} target="_blank">Link</a>
+					</td>
+				</tr>
+				<tr>
+					<td> Price </td>
+					<td>
+						{influencer.shopify.price || ''}
+						{influencer.shopify.currency || ''}
+					</td>
+				</tr>
+				<tr>
+					<td> Creation At </td>
+					<td>
+						{influencer.shopify.createdAt || ''}
+					</td>
+				</tr>
+				<tr>
+					<td> Processed At </td>
+					<td>
+						{influencer.shopify.processedAt || ''}
+					</td>
+				</tr>
+			</table>
+		{/if}
+		<h2 class="scentsTitle">Influencer's info</h2>
 		<table class="table">
-			<h2 class="scentsTitle">Influencer's info</h2>
 			<tr>
 				<td>Name</td>
 				<td
@@ -132,6 +165,10 @@
 			<tr>
 				<td>Email</td>
 				<td>{influencer.info.email}</td>
+			</tr>
+			<tr>
+				<td> Contact Id </td>
+				<td>{data.id}</td>
 			</tr>
 			<tr>
 				<td>Social Handle</td>
@@ -178,6 +215,18 @@
 					<td>Microsite</td>
 					<td>
 						{influencer.journey.micrositeSlug}
+					</td>
+				</tr>
+				<tr>
+					<td> Bottle label </td>
+					<td>
+						<a href={influencer.journey.bottleLabel} target="_blank">Link</a>
+					</td>
+				</tr>
+				<tr>
+					<td> Box label </td>
+					<td>
+						<a href={influencer.journey.boxLabel} target="_blank">Link</a>
 					</td>
 				</tr>
 			</table>
@@ -253,7 +302,9 @@
 		text-overflow: ellipsis;
 		overflow: hidden;
 		white-space: nowrap;
-
+		& a {
+			color: rgb(1, 8, 155);
+		}
 		& td {
 			min-width: 103px;
 			border: 1px solid #000;
