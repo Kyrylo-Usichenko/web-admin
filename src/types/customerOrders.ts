@@ -75,6 +75,7 @@ export type InfluencerDetails = {
 		};
 		bottleLabel: string;
 		boxLabel: BottleSize;
+		diecutLink: string | null;
 	};
 };
 

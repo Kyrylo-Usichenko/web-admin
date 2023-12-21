@@ -88,6 +88,9 @@ class Ai extends HttpClient {
 		this.instance.put('/admin/orders/influencerDiy/diecut', { orderId });
 	public saveDiecut = (formData: FormData): Promise<string> =>
 		this.instance.postForm('/admin/upload-diecut', formData);
+
+	public saveInfluencerDiecut = (formData: FormData): Promise<string> =>
+		this.instance.postForm('/admin/upload-diecut-influencer', formData);
 }
 
 export default Ai;

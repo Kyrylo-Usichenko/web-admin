@@ -2,23 +2,58 @@
 	import { aiApi } from '$api/index';
 	import Button from '$lib/shared/button/Button.svelte';
 	import Loader from '$lib/shared/loader/Loader.svelte';
+	import DiecutModal from '$lib/shared/modals/DiecutModal.svelte';
 	import EditModal from '$lib/shared/modals/EditScentsModal.svelte';
 	import type { InfluencerDetails } from '$types/customerOrders';
 	import type { AllScents } from '$types/index.js';
 	import { onMount } from 'svelte';
+	import Toastify from 'toastify-js';
 
 	export let data;
 
 	let influencer: InfluencerDetails | null = null;
 	let loading = true;
 	let allScents: AllScents | null = null;
+	let isModalOpened = false;
+	let isSaving = false;
+	let isDiecutSaving = false;
+	let isDiecutModalOpened = false;
 	let scents = {
 		main: '',
 		secScent1: '',
 		secScent2: ''
 	};
-	let isModalOpened = false;
-	let isSaving = false;
+
+	const toggleModal = () => {
+		isModalOpened = !isModalOpened;
+	};
+
+	const toggleDiecutModal = () => {
+		isDiecutModalOpened = !isDiecutModalOpened;
+	};
+
+	const saveDiecut = async (diecut: File) => {
+		isDiecutSaving = true;
+		try {
+			const form = new FormData();
+			form.append('file', diecut);
+			form.append('contactId', data.id);
+			const newDiecut = await aiApi.saveInfluencerDiecut(form);
+			isDiecutModalOpened = false;
+			if (influencer) influencer.journey.diecutLink = newDiecut;
+		} catch (err) {
+			Toastify({
+				text: 'Something went wrong',
+				duration: 3000,
+				close: true,
+				gravity: 'top',
+				position: 'center',
+				stopOnFocus: true
+			}).showToast();
+		} finally {
+			isDiecutSaving = false;
+		}
+	};
 
 	const saveScents = async (scentsToSave: {
 		main: string;
@@ -41,10 +76,6 @@
 		} finally {
 			isSaving = false;
 		}
-	};
-
-	const toggleModal = () => {
-		isModalOpened = !isModalOpened;
 	};
 
 	onMount(async () => {
@@ -117,7 +148,11 @@
 			<Loader />
 		</div>
 	{:else if influencer}
-		<h2>Shopify Id: #{influencer.shopify.orderNumber}</h2>
+		<h2>
+			#{influencer.shopify.orderNumber} | {influencer.shopify.price}
+			{influencer.shopify.currency}
+		</h2>
+
 		{#if influencer.shopify}
 			<h2 class="scentsTitle">Order info</h2>
 			<table class="table">
@@ -154,14 +189,17 @@
 		{/if}
 		<h2 class="scentsTitle">Influencer's info</h2>
 		<table class="table">
-			<tr>
-				<td>Name</td>
-				<td
-					>{`${influencer.info.firstName?.trim() || ''}  ${
-						influencer.info.lastName?.trim() || ''
-					}`}</td
-				>
-			</tr>
+			{#if influencer.info.firstName || influencer.info.lastName}
+				<tr>
+					<td>Name</td>
+					<td
+						>{`${influencer.info.firstName?.trim() || ''}  ${
+							influencer.info.lastName?.trim() || ''
+						}`}</td
+					>
+				</tr>
+			{/if}
+
 			<tr>
 				<td>Email</td>
 				<td>{influencer.info.email}</td>
@@ -170,10 +208,12 @@
 				<td> Contact Id </td>
 				<td>{data.id}</td>
 			</tr>
-			<tr>
-				<td>Social Handle</td>
-				<td>{influencer.info.socialHandle}</td>
-			</tr>
+			{#if influencer.info.socialHandle}
+				<tr>
+					<td>Social Handle</td>
+					<td>{influencer.info.socialHandle}</td>
+				</tr>
+			{/if}
 		</table>
 		{#if influencer.journey}
 			<h2 class="scentsTitle">Journey</h2>
@@ -211,22 +251,42 @@
 						</p>
 					</td>
 				</tr>
+				{#if influencer.journey.micrositeSlug}
+					<tr>
+						<td>Microsite</td>
+						<td>
+							{influencer.journey.micrositeSlug}
+						</td>
+					</tr>
+				{/if}
+				{#if influencer.journey.bottleLabel}
+					<tr>
+						<td> Bottle label </td>
+						<td>
+							<a href={influencer.journey.bottleLabel} target="_blank">Link</a>
+						</td>
+					</tr>
+				{/if}
+				{#if influencer.journey.boxLabel}
+					<tr>
+						<td> Box label </td>
+						<td>
+							<a href={influencer.journey.boxLabel} target="_blank">Link</a>
+						</td>
+					</tr>
+				{/if}
+
 				<tr>
-					<td>Microsite</td>
+					<td> Diecut </td>
 					<td>
-						{influencer.journey.micrositeSlug}
-					</td>
-				</tr>
-				<tr>
-					<td> Bottle label </td>
-					<td>
-						<a href={influencer.journey.bottleLabel} target="_blank">Link</a>
-					</td>
-				</tr>
-				<tr>
-					<td> Box label </td>
-					<td>
-						<a href={influencer.journey.boxLabel} target="_blank">Link</a>
+						<div class="diecut">
+							{#if influencer.journey.diecutLink}
+								<a href={influencer.journey.diecutLink} target="_blank"> Link </a>
+							{:else}
+								<span>No diecut</span>
+							{/if}
+							<button class="generate-diecut-button" on:click={toggleDiecutModal}> Upload </button>
+						</div>
 					</td>
 				</tr>
 			</table>
@@ -285,6 +345,12 @@
 		isOpened={isModalOpened}
 	/>
 {/if}
+<DiecutModal
+	isOpened={isDiecutModalOpened}
+	toggleModal={toggleDiecutModal}
+	onSave={saveDiecut}
+	isLoading={isDiecutSaving}
+/>
 
 <style>
 	.editWrapper {
@@ -296,7 +362,17 @@
 		font-size: 20px;
 		font-weight: 600;
 	}
+	.diecut {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
 
+	.generate-diecut-button {
+		background: none;
+		border: none;
+		text-decoration: underline;
+	}
 	.table {
 		border-collapse: collapse;
 		text-overflow: ellipsis;
