@@ -11,6 +11,7 @@ import type {
 import HttpClient from '../http/http';
 import type {
 	GetInfluencerOrderResBody,
+	GetInfluencersReqBody,
 	GetOrdersReqBody,
 	SetInfluencerDiyScentsReqBody,
 	SetInfluencerScentsReqBody,
@@ -39,11 +40,13 @@ class Ai extends HttpClient {
 		this.instance.get<GetInfluencerOrderResBody>(`/admin/influencer-store-orders/order/${id}`);
 
 	public getOrders = ({ ordersType, limit, offset, search }: GetOrdersReqBody) => {
-		const serachParam = search === '' ? `` : `&search=${search}`;
-		const orderTypeParam = ordersType ? `&orderType=${ordersType}` : ``;
-		return this.instance.get<GetOrdersResBody>(
-			`/admin/orders?limit=${limit}&offset=${offset}${serachParam}${orderTypeParam}`
-		);
+		const body: GetOrdersReqBody = {
+			offset,
+			limit
+		};
+		if (search) body.search = search;
+		if (ordersType) body.orderType = ordersType;
+		return this.instance.post<GetOrdersResBody>('/admin/orders', body);
 	};
 
 	public getOrder = (orderId: string | number) =>
@@ -58,12 +61,14 @@ class Ai extends HttpClient {
 	public getInfluencerShopOrder = (orderId: string | number) =>
 		this.instance.get<GetShopOrder>(`/admin/orders/influencerShop/${orderId}`);
 
-	public getInfluencers = (limit: number, offset: number, search: string) =>
-		this.instance.get<GetInfluencersResBody>(
-			`/admin/influencers?limit=${limit}&offset=${offset} ${
-				search === '' ? `` : `&search=${search}`
-			}`
-		);
+	public getInfluencers = (limit: number, offset: number, search: string) => {
+		const body: GetInfluencersReqBody = {
+			limit,
+			offset
+		};
+		if (search) body.search = search;
+		return this.instance.post<GetInfluencersResBody>('/admin/influencers', body);
+	};
 
 	public getInfluencer = (id: string | number) =>
 		this.instance.get<GetInfluencerResBody>(`/admin/influencers/${id}`);
