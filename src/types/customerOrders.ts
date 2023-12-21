@@ -196,6 +196,11 @@ export interface GetDiyOrderData extends ShopifyOrder {
 		gender: Gender;
 		labelName: string;
 		labelType: LabelType;
+		initialScents: {
+			mainScent: string;
+			secondary1: string;
+			secondary2: string;
+		};
 		selectedFragrance: SelectedFragrance;
 		scents: {
 			main: string;

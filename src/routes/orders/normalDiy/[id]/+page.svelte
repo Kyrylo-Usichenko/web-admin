@@ -283,15 +283,15 @@
 			<table class="table">
 				<tr>
 					<td> Main </td>
-					<td> {scents.main} </td>
+					<td> {order.attributes.initialScents.mainScent} </td>
 				</tr>
 				<tr>
 					<td> Secondary</td>
-					<td> {scents.secScent1} </td>
+					<td> {order.attributes.initialScents.secondary1} </td>
 				</tr>
 				<tr>
 					<td> Secondary 2</td>
-					<td> {scents.secScent2} </td>
+					<td> {order.attributes.initialScents.secondary2} </td>
 				</tr>
 			</table>
 			<h2 class="scentsTitle">Scents</h2>
