@@ -217,9 +217,10 @@ export interface GetDiyOrderData extends ShopifyOrder {
 		labelName: string;
 		labelType: LabelType;
 		initialScents: {
-			mainScent: string;
+			mainScent?: string;
 			secondary1: string;
 			secondary2: string;
+			main?: string;
 		};
 		selectedFragrance: SelectedFragrance;
 		scents: {

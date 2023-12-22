@@ -190,8 +190,8 @@
 				<tr>
 					<td>Fragrance</td>
 					<td>
-						{order.attributes?.selectedFragrance.name} / {order.attributes?.selectedFragrance
-							.family} / {order.attributes?.selectedFragrance.gender}
+						{order.attributes?.selectedFragrance?.name} / {order.attributes?.selectedFragrance
+							?.family} / {order.attributes?.selectedFragrance?.gender}
 						<a href={order.attributes?.selectedFragrance?.image} target="_blank">Image link</a>
 					</td>
 				</tr>
@@ -341,9 +341,9 @@
 		{availableScents}
 		{toggleModal}
 		scents={{
-			main: scents.main,
-			secondary1: scents.secScent1,
-			secondary2: scents.secScent2
+			main: scents?.main,
+			secondary1: scents?.secScent1,
+			secondary2: scents?.secScent2
 		}}
 		onSave={saveScents}
 		isLoading={isSaving}
