@@ -88,6 +88,26 @@ export type GetScentsResBody = {
 	};
 };
 
+export type GetScentsResBody2 = {
+	scents: {
+		main: {
+			count: number;
+			name: string;
+			scentCode: string;
+		}[];
+		secondary1: {
+			count: number;
+			name: string;
+			scentCode: string;
+		}[];
+		secondary2: {
+			count: number;
+			name: string;
+			scentCode: string;
+		}[];
+	};
+};
+
 type Scent = {
 	id: number;
 	title: string;

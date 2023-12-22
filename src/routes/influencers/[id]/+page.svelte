@@ -3,9 +3,9 @@
 	import Button from '$lib/shared/button/Button.svelte';
 	import Loader from '$lib/shared/loader/Loader.svelte';
 	import DiecutModal from '$lib/shared/modals/DiecutModal.svelte';
-	import EditModal from '$lib/shared/modals/EditScentsModal.svelte';
+	import EditModal from '$lib/shared/modals/editScents/EditScentsModal.svelte';
 	import type { InfluencerDetails } from '$types/customerOrders';
-	import type { AllScents } from '$types/index.js';
+	import type { AvailableScents } from '$types/index.js';
 	import { onMount } from 'svelte';
 	import Toastify from 'toastify-js';
 
@@ -13,7 +13,7 @@
 
 	let influencer: InfluencerDetails | null = null;
 	let loading = true;
-	let allScents: AllScents | null = null;
+	let availableScents: AvailableScents | null = null;
 	let isModalOpened = false;
 	let isSaving = false;
 	let isDiecutSaving = false;
@@ -77,58 +77,13 @@
 			isSaving = false;
 		}
 	};
-
-	onMount(async () => {
+	const getInfluencer = async () => {
+		loading = true;
 		try {
-			const [influencerRes, scentsRes] = await Promise.all([
-				await aiApi.getInfluencer(data.id),
-				await aiApi.getScents()
-			]);
+			const influencerRes = await aiApi.getInfluencer(data.id);
+
 			influencer = influencerRes.data.data;
 
-			const mainScents = Object.keys(scentsRes.data)
-				.map((key) => {
-					const title = scentsRes.data[key]['50ML']?.title;
-					const qty = scentsRes.data[key]['50ML']?.qty;
-					if (!title || !qty) return null;
-					return {
-						name: title.substring(title.indexOf('-') + 1, title.lastIndexOf('-')).trim(),
-						quantity: qty,
-						code: key
-					};
-				})
-				.filter((scent) => scent !== null);
-			const secindaryScents1 = Object.keys(scentsRes.data)
-				.map((key) => {
-					const title = scentsRes.data[key]['5ML']?.title;
-					const qty = scentsRes.data[key]['5ML']?.qty;
-					if (!title || !qty) return null;
-
-					return {
-						name: title.substring(title.indexOf('-') + 1, title.lastIndexOf('-')).trim(),
-						quantity: qty,
-						code: key
-					};
-				})
-				.filter((scent) => scent !== null);
-			const secindaryScents2 = Object.keys(scentsRes.data)
-				.map((key) => {
-					const title = scentsRes.data[key]['5ML']?.title;
-					const qty = scentsRes.data[key]['5ML']?.qty;
-					if (!title || !qty) return null;
-
-					return {
-						name: title.substring(title.indexOf('-') + 1, title.lastIndexOf('-')).trim(),
-						quantity: qty,
-						code: key
-					};
-				})
-				.filter((scent) => scent !== null);
-			allScents = {
-				main: mainScents,
-				secondary1: secindaryScents1,
-				secondary2: secindaryScents2
-			};
 			scents = {
 				main: influencer.journey?.scentCodes?.main || '',
 				secScent1: influencer.journey?.scentCodes?.secondary1 || '',
@@ -139,6 +94,17 @@
 		} finally {
 			loading = false;
 		}
+	};
+	const getScents = async () => {
+		try {
+			const res = await aiApi.getScents2(data.id);
+			availableScents = res.data.scents;
+		} catch (err) {
+			console.log(err);
+		}
+	};
+	onMount(() => {
+		Promise.all([getInfluencer(), getScents()]);
 	});
 </script>
 
@@ -331,9 +297,9 @@
 	{/if}
 </main>
 
-{#if allScents}
+{#if availableScents}
 	<EditModal
-		{allScents}
+		{availableScents}
 		{toggleModal}
 		scents={{
 			main: scents.main,

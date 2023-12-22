@@ -4,9 +4,9 @@
 	import Button from '$lib/shared/button/Button.svelte';
 	import Loader from '$lib/shared/loader/Loader.svelte';
 	import DiecutModal from '$lib/shared/modals/DiecutModal.svelte';
-	import EditModal from '$lib/shared/modals/EditScentsModal.svelte';
+	import EditModal from '$lib/shared/modals/editScents/EditScentsModal.svelte';
 	import type { GetInfluencerDiyOrderData } from '$types/customerOrders.js';
-	import type { AllScents } from '$types/index.js';
+	import type { AvailableScents } from '$types/index.js';
 	import { formatDate, relativeDate } from '$utils/time.js';
 	import { onMount } from 'svelte';
 	import Toastify from 'toastify-js';
@@ -17,8 +17,7 @@
 	let loading = true;
 	let isModalOpened = false;
 	let isSaving = false;
-	let allScents: AllScents | null = null;
-	let isGenerateClicked = false;
+	let availableScents: AvailableScents | null = null;
 	let isDiecutSaving = false;
 	let isDiecutModalOpened = false;
 	let scents: {
@@ -39,7 +38,7 @@
 			const form = new FormData();
 			form.append('file', diecut);
 			form.append('orderId', data.id);
-			const newDiecut = await aiApi.saveDiecut(form);			
+			const newDiecut = await aiApi.saveDiecut(form);
 			isDiecutModalOpened = false;
 			if (order) order.diecutLink = newDiecut;
 		} catch (err) {
@@ -77,10 +76,10 @@
 		}
 	};
 
-	const getOrders = async () => {
+	const getOrder = async () => {
 		loading = true;
 		try {
-			const res = await aiApi.getInfluencerDiyOrder(data.id);
+			const res = await aiApi.getFollowerDiyOrder(data.id);
 			order = res.data.data;
 
 			scents = {
@@ -95,53 +94,17 @@
 			loading = false;
 		}
 	};
+	const getScents = async () => {
+		try {
+			const res = await aiApi.getScents2(data.id);
+			availableScents = res.data.scents;
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
-	onMount(async () => {
-		const [influencerRes, scentsRes] = await Promise.all([getOrders(), aiApi.getScents()]);
-
-		const mainScents = Object.keys(scentsRes.data)
-			.map((key) => {
-				const title = scentsRes.data[key]['50ML']?.title;
-				const qty = scentsRes.data[key]['50ML']?.qty;
-				if (!title || !qty) return null;
-				return {
-					name: title.substring(title.indexOf('-') + 1, title.lastIndexOf('-')).trim(),
-					quantity: qty,
-					code: key
-				};
-			})
-			.filter((scent) => scent !== null);
-		const secindaryScents1 = Object.keys(scentsRes.data)
-			.map((key) => {
-				const title = scentsRes.data[key]['5ML']?.title;
-				const qty = scentsRes.data[key]['5ML']?.qty;
-				if (!title || !qty) return null;
-
-				return {
-					name: title.substring(title.indexOf('-') + 1, title.lastIndexOf('-')).trim(),
-					quantity: qty,
-					code: key
-				};
-			})
-			.filter((scent) => scent !== null);
-		const secindaryScents2 = Object.keys(scentsRes.data)
-			.map((key) => {
-				const title = scentsRes.data[key]['5ML']?.title;
-				const qty = scentsRes.data[key]['5ML']?.qty;
-				if (!title || !qty) return null;
-
-				return {
-					name: title.substring(title.indexOf('-') + 1, title.lastIndexOf('-')).trim(),
-					quantity: qty,
-					code: key
-				};
-			})
-			.filter((scent) => scent !== null);
-		allScents = {
-			main: mainScents,
-			secondary1: secindaryScents1,
-			secondary2: secindaryScents2
-		};
+	onMount(() => {
+		Promise.all([getOrder(), getScents()]);
 	});
 </script>
 
@@ -373,9 +336,9 @@
 	isLoading={isDiecutSaving}
 />
 
-{#if allScents}
+{#if availableScents}
 	<EditModal
-		{allScents}
+		{availableScents}
 		{toggleModal}
 		scents={{
 			main: scents.main,

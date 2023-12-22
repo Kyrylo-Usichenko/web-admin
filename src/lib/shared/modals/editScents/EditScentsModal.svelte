@@ -2,31 +2,25 @@
 	import type { SetScentsReqBodyScents } from '$api/main/types';
 	import Button from '$lib/shared/button/Button.svelte';
 	import Modal from '$lib/shared/modal/Modal.svelte';
-	import type { AllScents, Scents } from '$types/index';
-	import { findScent } from '../../../routes/influencers/[id]/components/utils';
+	import type { AvailableScents, Scents } from '$types/index';
+	import { findScent } from './utils';
 
-	export let allScents: AllScents;
+	export let availableScents: AvailableScents;
 	export let toggleModal: () => void;
 	export let isLoading: boolean;
 	export let isOpened: boolean;
 	export let onSave: (scents: SetScentsReqBodyScents) => void;
 	export let scents: Scents;
 
-	allScents.main.map((scent) => {
-		if (scent.code === scents.main) {
-		}
-		return scent;
-	});
-
-	let scent1 = findScent(scents.main, allScents.main);
-	let scent2 = findScent(scents.secondary1, allScents.secondary1);
-	let scent3 = findScent(scents.secondary2, allScents.secondary2);
+	let scent1 = findScent(scents.main, availableScents.main);
+	let scent2 = findScent(scents.secondary1, availableScents.secondary1);
+	let scent3 = findScent(scents.secondary2, availableScents.secondary2);
 
 	const onSaveClick = () => {
 		onSave({
-			main: scent1.code,
-			secScent1: scent2.code,
-			secScent2: scent3.code
+			main: scent1.scentCode,
+			secScent1: scent2.scentCode,
+			secScent2: scent3.scentCode
 		});
 	};
 </script>
@@ -34,21 +28,21 @@
 <Modal {toggleModal} {isOpened} isClosable={!isLoading}>
 	<div class="inner">
 		<select bind:value={scent1} class="select">
-			{#each allScents.main as scent}
+			{#each availableScents.main as scent}
 				<option value={scent}>
-					({scent.code}) {scent.name} [{scent.quantity}]
+					({scent.scentCode}) {scent.name} [{scent.count}]
 				</option>{/each}
 		</select>
 		<select bind:value={scent2} class="select">
-			{#each allScents.secondary1 as scent}
+			{#each availableScents.secondary1 as scent}
 				<option value={scent}>
-					({scent.code}) {scent.name} [{scent.quantity}]
+					({scent.scentCode}) {scent.name} [{scent.count}]
 				</option>{/each}
 		</select>
 		<select bind:value={scent3} class="select">
-			{#each allScents.secondary2 as scent}
+			{#each availableScents.secondary2 as scent}
 				<option value={scent}>
-					({scent.code}) {scent.name} [{scent.quantity}]
+					({scent.scentCode}) {scent.name} [{scent.count}]
 				</option>
 			{/each}
 		</select>

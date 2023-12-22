@@ -26,7 +26,6 @@
 	const onDragOver = (e: DragEvent) => {
 		e.preventDefault();
 		isHovered = true;
-		console.log('dragover');
 	};
 
 	const onSaveClick = () => {

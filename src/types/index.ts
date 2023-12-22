@@ -53,6 +53,17 @@ export type Scents = {
 	secondary2: string;
 };
 
+type AvailableScent = {
+	count: number;
+	name: string;
+	scentCode: string;
+};
+export type AvailableScents = {
+	main: AvailableScent[];
+	secondary1: AvailableScent[];
+	secondary2: AvailableScent[];
+};
+
 export type Gender = 'feminine' | 'masculine' | 'unisex';
 export type Time = 'day' | 'night';
 export type Mood = 'sexy' | 'elegant' | 'fresh';

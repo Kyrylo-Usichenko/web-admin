@@ -32,7 +32,6 @@
 	const onOrderClick = (cellInfo: any) => {
 		const id = cellInfo.original.id;
 		let orderType = null;
-		console.log(selectedRoute);
 
 		if (selectedRoute !== '' && selectedRoute) orderType = selectedRoute;
 		if (selectedRoute === '' || !selectedRoute) {

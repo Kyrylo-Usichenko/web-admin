@@ -6,6 +6,7 @@ import type {
 	GetOrderResBody,
 	GetOrdersResBody,
 	GetScentsResBody,
+	GetScentsResBody2,
 	GetShopOrder
 } from '../../types/customerOrders';
 import HttpClient from '../http/http';
@@ -52,13 +53,13 @@ class Ai extends HttpClient {
 	public getOrder = (orderId: string | number) =>
 		this.instance.get<GetOrderResBody>(`/admin/orders/${orderId}`);
 
-	public getInfluencerDiyOrder = (orderId: string | number) =>
+	public getFollowerDiyOrder = (orderId: string | number) =>
 		this.instance.get<GetInfluencerDiyOrder>(`/admin/orders/influencerDiy/${orderId}`);
 
 	public getDiyOrder = (orderId: string | number) =>
 		this.instance.get<GetDiyOrder>(`/admin/orders/normalDiy/${orderId}`);
 
-	public getInfluencerShopOrder = (orderId: string | number) =>
+	public getFollowerOrder = (orderId: string | number) =>
 		this.instance.get<GetShopOrder>(`/admin/orders/influencerShop/${orderId}`);
 
 	public getInfluencers = (limit: number, offset: number, search: string) => {
@@ -78,6 +79,9 @@ class Ai extends HttpClient {
 
 	public getScents = () =>
 		this.instance.get<GetScentsResBody>('/admin/influencer-store-orders/scents');
+
+	public getScents2 = (orderId: number | string) =>
+		this.instance.get<GetScentsResBody2>(`/admin/scents?orderId=${orderId}`);
 
 	public setScents = (body: SetScentsReqBody) => this.instance.put('/admin/orders/scents', body);
 	public setDiyScents = (body: SetScentsReqBody) =>
