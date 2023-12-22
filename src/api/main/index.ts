@@ -77,10 +77,9 @@ class Ai extends HttpClient {
 	public setInfluencerScents = (body: SetInfluencerScentsReqBody) =>
 		this.instance.put('/admin/update-influencer-scents', body);
 
-	public getScents = () =>
-		this.instance.get<GetScentsResBody>('/admin/influencer-store-orders/scents');
 
-	public getScents2 = (orderId: number | string) =>
+
+	public getScents = (orderId: number | string) =>
 		this.instance.get<GetScentsResBody2>(`/admin/scents?orderId=${orderId}`);
 
 	public setScents = (body: SetScentsReqBody) => this.instance.put('/admin/orders/scents', body);

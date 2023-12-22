@@ -97,7 +97,7 @@
 	};
 	const getScents = async () => {
 		try {
-			const res = await aiApi.getScents2(data.id);
+			const res = await aiApi.getScents(data.id);
 			availableScents = res.data.scents;
 		} catch (err) {
 			console.log(err);
