@@ -232,7 +232,7 @@
 				{#if order.attributes.labelType !== 'GENERIC'}
 					<tr>
 						<td>Final Label Image</td>
-						<td> <a href={order.attributes.finalLabelImage} target="_blank"> </a></td>
+						<td> <a href={order.attributes.finalLabelImage} target="_blank"> Link</a></td>
 					</tr>
 				{/if}
 				<tr>
@@ -250,8 +250,9 @@
 			<table class="table">
 				<tr>
 					<td> Main </td>
-					<td> {order.attributes.initialScents.main || order.attributes.initialScents.mainScent
-					} </td>
+					<td>
+						{order.attributes.initialScents.main || order.attributes.initialScents.mainScent}
+					</td>
 				</tr>
 				<tr>
 					<td> Secondary</td>
