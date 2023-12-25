@@ -10,6 +10,7 @@
 	import { formatDate, relativeDate } from '$utils/time.js';
 	import { onMount } from 'svelte';
 	import Toastify from 'toastify-js';
+	import ScentRow from './../../../../lib/shared/scentRow/ScentRow.svelte';
 
 	export let data;
 
@@ -272,33 +273,9 @@
 			</table>
 			<h2 class="scentsTitle">Scents</h2>
 			<table class="table">
-				<tr>
-					<td> Main </td>
-					<td>
-						{order.attributes.scents?.main?.code || ''}
-						{#if order?.attributes.scents?.main.oosStatus}
-							<span> - OOS</span>
-						{/if}
-					</td>
-				</tr>
-				<tr>
-					<td> Secondary</td>
-					<td>
-						{order.attributes.scents?.secondary1.code || ''}
-						{#if order?.attributes.scents?.secondary1.oosStatus}
-							<span> - OOS</span>
-						{/if}
-					</td>
-				</tr>
-				<tr>
-					<td> Secondary 2</td>
-					<td>
-						{order.attributes.scents?.secondary2.code || ''}
-						{#if order?.attributes.scents?.secondary2.oosStatus}
-							<span> - OOS</span>
-						{/if}
-					</td>
-				</tr>
+				<ScentRow scent={order.attributes.scents.main} key="Main" />
+				<ScentRow scent={order.attributes.scents.secondary1} key="Secondary 1" />
+				<ScentRow scent={order.attributes.scents.secondary2} key="Secondary 2" />
 			</table>
 			<div class="editWrapper">
 				<Button onClick={toggleModal} text="Edit scents" />
@@ -380,6 +357,11 @@
 		border: none;
 		text-decoration: underline;
 	}
+	.oos {
+		background: #ff0000ba;
+		cursor: help;
+	}
+
 	.table {
 		border-collapse: collapse;
 		text-overflow: ellipsis;

@@ -8,6 +8,7 @@
 	import type { AvailableScents } from '$types/index.js';
 	import { onMount } from 'svelte';
 	import Toastify from 'toastify-js';
+	import ScentRow from './../../../lib/shared/scentRow/ScentRow.svelte';
 
 	export let data;
 
@@ -277,18 +278,27 @@
 
 		<h2 class="scentsTitle">Scents</h2>
 		<table class="table">
-			<tr>
-				<td>Main</td>
-				<td>{scents?.main}</td>
-			</tr>
-			<tr>
-				<td>Secondary1</td>
-				<td>{scents?.secScent1}</td>
-			</tr>
-			<tr>
-				<td>Secondary2</td>
-				<td>{scents?.secScent2}</td>
-			</tr>
+			<ScentRow
+				scent={{
+					code: scents.main,
+					oosStatus: false
+				}}
+				key="Main"
+			/>
+			<ScentRow
+				scent={{
+					code: scents.secScent1,
+					oosStatus: false
+				}}
+				key="Secondary 1"
+			/>
+			<ScentRow
+				scent={{
+					code: scents.secScent2,
+					oosStatus: false
+				}}
+				key="Secondary 2"
+			/>
 		</table>
 
 		<div class="editWrapper">

@@ -5,6 +5,7 @@
 	import Loader from '$lib/shared/loader/Loader.svelte';
 	import DiecutModal from '$lib/shared/modals/DiecutModal.svelte';
 	import EditModal from '$lib/shared/modals/editScents/EditScentsModal.svelte';
+	import ScentRow from '$lib/shared/scentRow/ScentRow.svelte';
 	import type { GetInfluencerDiyOrderData } from '$types/customerOrders.js';
 	import type { AvailableScents } from '$types/index.js';
 	import { formatDate, relativeDate } from '$utils/time.js';
@@ -309,33 +310,12 @@
 			</table>
 			<h2 class="scentsTitle">Scents</h2>
 			<table class="table">
-				<tr>
-					<td> Main </td>
-					<td>
-						{order?.attributes?.scents?.main.code || ''}
-						{#if order?.attributes?.scents?.main.oosStatus}
-							<span> - OOS</span>
-						{/if}
-					</td>
-				</tr>
-				<tr>
-					<td> Secondary</td>
-					<td>
-						{order?.attributes?.scents?.secondary.code || ''}
-						{#if order?.attributes?.scents?.secondary.oosStatus}
-							<span> - OOS</span>
-						{/if}
-					</td>
-				</tr>
-				<tr>
-					<td> Influencer's main scent</td>
-					<td>
-						{order?.attributes.scents?.influencerScent.code || ''}
-						{#if order?.attributes.scents?.influencerScent.oosStatus}
-							<span> - OOS</span>
-						{/if}
-					</td>
-				</tr>
+				<ScentRow scent={order.attributes.scents.main} key="Main" />
+				<ScentRow scent={order.attributes.scents.secondary} key="Secondary" />
+				<ScentRow
+					scent={order.attributes.scents.influencerScent}
+					key="Influencer's main scent"
+				/>
 			</table>
 
 			<div class="editWrapper">
