@@ -53,6 +53,17 @@ export type Scents = {
 	secondary2: string;
 };
 
+export type ScentToUpdate = {
+	oosStatus: boolean;
+	code: string;
+};
+
+export type ScentsToUpdate = {
+	main: ScentToUpdate;
+	secScent1: ScentToUpdate;
+	secScent2: ScentToUpdate;
+};
+
 type AvailableScent = {
 	count: number;
 	name: string;

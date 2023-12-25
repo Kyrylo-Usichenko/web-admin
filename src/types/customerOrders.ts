@@ -1,4 +1,4 @@
-import type { Gender, Mood, Time } from '.';
+import type { Gender, Mood, ScentToUpdate, Time } from '.';
 
 export type OrderType = 'influencerShop' | 'influencerDiy' | 'normalDiy';
 export type BottleSize = '5ML' | '15ML' | '50ML' | '100ML';
@@ -166,7 +166,7 @@ export interface InfluencerDiyShopifyOrder extends ShopifyOrder {
 }
 export interface GetInfluencerDiyOrderData extends InfluencerDiyShopifyOrder {
 	attributes: {
-		allInfluencerData?: string | null;
+		allInfluData?: string | null;
 		journeyData?: string | null;
 		time: Time;
 		mood: Mood;
@@ -186,9 +186,9 @@ export interface GetInfluencerDiyOrderData extends InfluencerDiyShopifyOrder {
 		};
 
 		scents: {
-			main: string;
-			secondary: string;
-			influencerScent: string;
+			main: ScentToUpdate;
+			secondary: ScentToUpdate;
+			influencerScent: ScentToUpdate;
 		};
 		selectedMockup: string;
 	} | null;
@@ -204,7 +204,7 @@ export type GetInfluencerDiyOrder = {
 
 export interface GetDiyOrderData extends ShopifyOrder {
 	attributes: {
-		allInfluencerData?: string | null;
+		allInfluData?: string | null;
 		journeyData?: string | null;
 		time: Time;
 		mood: Mood;
@@ -224,9 +224,9 @@ export interface GetDiyOrderData extends ShopifyOrder {
 		};
 		selectedFragrance: SelectedFragrance;
 		scents: {
-			main: string;
-			secondary1: string;
-			secondary2: string;
+			main: ScentToUpdate;
+			secondary1: ScentToUpdate;
+			secondary2: ScentToUpdate;
 		};
 		selectedMockup: string;
 	} | null;
@@ -254,7 +254,7 @@ export interface FollowerShopifyOrder extends ShopifyOrder {
 }
 export interface GetShopOrderData extends FollowerShopifyOrder {
 	attributes: {
-		allInfluencerData?: string | null;
+		allInfluData?: string | null;
 		journeyData?: string | null;
 		orderType: OrderType;
 		micrositeSlug: string;
@@ -266,9 +266,18 @@ export interface GetShopOrderData extends FollowerShopifyOrder {
 			secondary2: string;
 		};
 		scents: {
-			main: string;
-			secondary1: string;
-			secondary2: string;
+			main: {
+				oosStatus: boolean;
+				code: string;
+			};
+			secondary1: {
+				oosStatus: boolean;
+				code: string;
+			};
+			secondary2: {
+				oosStatus: boolean;
+				code: string;
+			};
 		};
 		selectedMockup: string;
 	} | null;

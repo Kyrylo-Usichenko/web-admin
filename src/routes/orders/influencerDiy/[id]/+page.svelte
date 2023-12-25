@@ -20,11 +20,6 @@
 	let availableScents: AvailableScents | null = null;
 	let isDiecutSaving = false;
 	let isDiecutModalOpened = false;
-	let scents: {
-		main: string;
-		secScent1: string;
-		secScent2: string;
-	};
 
 	const toggleModal = () => {
 		isModalOpened = !isModalOpened;
@@ -67,7 +62,22 @@
 				secScent: scentsToSave?.secScent1,
 				influencerScent: scentsToSave?.secScent2
 			});
-			scents = scentsToSave;
+			if (order?.attributes?.scents) {
+				order.attributes.scents = {
+					main: {
+						code: scentsToSave?.main,
+						oosStatus: false
+					},
+					secondary: {
+						code: scentsToSave?.secScent1,
+						oosStatus: false
+					},
+					influencerScent: {
+						code: scentsToSave?.secScent2,
+						oosStatus: false
+					}
+				};
+			}
 			toggleModal();
 		} catch (err) {
 			console.log(err);
@@ -82,11 +92,6 @@
 			const res = await aiApi.getFollowerDiyOrder(data.id);
 			order = res.data.data;
 
-			scents = {
-				main: order.attributes?.scents.main || '',
-				secScent1: order.attributes?.scents.secondary || '',
-				secScent2: order.attributes?.scents.influencerScent || ''
-			};
 			isModalOpened = false;
 		} catch (err) {
 			console.log(err);
@@ -177,7 +182,7 @@
 			</tr>
 		</table>
 
-		{#if order.attributes && !order.attributes?.allInfluencerData && !order.attributes?.journeyData}
+		{#if order.attributes && !order.attributes?.allInfluData && !order.attributes?.journeyData}
 			<h2 class="journeyTitle">Journey</h2>
 
 			<table class="table">
@@ -306,15 +311,30 @@
 			<table class="table">
 				<tr>
 					<td> Main </td>
-					<td> {scents?.main} </td>
+					<td>
+						{order?.attributes?.scents?.main.code || ''}
+						{#if order?.attributes?.scents?.main.oosStatus}
+							<span> - OOS</span>
+						{/if}
+					</td>
 				</tr>
 				<tr>
 					<td> Secondary</td>
-					<td> {scents?.secScent1} </td>
+					<td>
+						{order?.attributes?.scents?.secondary.code || ''}
+						{#if order?.attributes?.scents?.secondary.oosStatus}
+							<span> - OOS</span>
+						{/if}
+					</td>
 				</tr>
 				<tr>
 					<td> Influencer's main scent</td>
-					<td> {scents?.secScent2} </td>
+					<td>
+						{order?.attributes.scents?.influencerScent.code || ''}
+						{#if order?.attributes.scents?.influencerScent.oosStatus}
+							<span> - OOS</span>
+						{/if}
+					</td>
 				</tr>
 			</table>
 
@@ -336,14 +356,14 @@
 	isLoading={isDiecutSaving}
 />
 
-{#if availableScents}
+{#if availableScents && order?.attributes?.scents}
 	<EditModal
 		{availableScents}
 		{toggleModal}
 		scents={{
-			main: scents?.main,
-			secondary1: scents?.secScent1,
-			secondary2: scents?.secScent2
+			main: order.attributes.scents.main.code,
+			secondary1: order.attributes.scents.secondary.code,
+			secondary2: order.attributes.scents.influencerScent.code
 		}}
 		onSave={saveScents}
 		isLoading={isSaving}

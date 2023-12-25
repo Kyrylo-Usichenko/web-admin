@@ -5,7 +5,6 @@ import type {
 	GetInfluencersResBody,
 	GetOrderResBody,
 	GetOrdersResBody,
-	GetScentsResBody,
 	GetScentsResBody2,
 	GetShopOrder
 } from '../../types/customerOrders';
@@ -76,8 +75,6 @@ class Ai extends HttpClient {
 
 	public setInfluencerScents = (body: SetInfluencerScentsReqBody) =>
 		this.instance.put('/admin/update-influencer-scents', body);
-
-
 
 	public getScents = (orderId: number | string) =>
 		this.instance.get<GetScentsResBody2>(`/admin/scents?orderId=${orderId}`);
