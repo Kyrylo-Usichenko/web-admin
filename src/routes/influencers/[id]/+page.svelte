@@ -120,7 +120,7 @@
 			{influencer.shopify.currency}
 		</h2>
 
-		{#if influencer.shopify}
+		<!-- {#if influencer.shopify}
 			<h2 class="scentsTitle">Order info</h2>
 			<table class="table">
 				<tr>
@@ -153,7 +153,7 @@
 					</td>
 				</tr>
 			</table>
-		{/if}
+		{/if} -->
 		<h2 class="scentsTitle">Influencer's info</h2>
 		<table class="table">
 			{#if influencer.info.firstName || influencer.info.lastName}
