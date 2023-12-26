@@ -90,6 +90,8 @@ class Ai extends HttpClient {
 		this.instance.postForm('/admin/upload-diecut-influencer', formData);
 
 	public getAllScents = () => this.instance.get<GetAllScentsResBody>('/admin/influencer/scents');
+	public approveOrder = (orderId: number | string) =>
+		this.instance.put('/admin/orders/approve', { orderId });
 }
 
 export default Ai;

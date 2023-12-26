@@ -3,13 +3,50 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Loader from '$lib/shared/loader/Loader.svelte';
+	import OrderStatusTag from '$lib/shared/orderStatusTag/OrderStatusTag.svelte';
 	import Table from '$lib/shared/table/Table.svelte';
 	import type { OrderType } from '$types/customerOrders';
 	import { navigate } from '$utils/navigate';
 	import { formatDate } from '$utils/time';
+	import { flexRender, type ColumnDef } from '@tanstack/svelte-table';
 	import Dropdown from './components/Dropdown.svelte';
 	import type { OrderTypeName } from './types';
-	import { defaultColumns, routes } from './utils';
+	import { routes, type Person } from './utils';
+
+	const defaultColumns: ColumnDef<Person>[] = [
+		{
+			accessorKey: 'orderName',
+			header: () => 'Order Name',
+			cell: (info) => info.getValue()
+		},
+		{
+			accessorKey: 'orderStatus',
+			header: () => 'Status',
+			cell: (info) => flexRender(OrderStatusTag, { status: info.getValue() }),
+			
+		},
+		{
+			accessorKey: 'name',
+			header: () => 'Name',
+			cell: (info) => info.getValue()
+		},
+		{
+			accessorKey: 'email',
+			header: () => 'Email',
+			cell: (info) => info.getValue()
+		},
+		{
+			accessorKey: 'totalPrice',
+			header: () => 'Price',
+			cell: (info) => info.getValue()
+		},
+		{
+			accessorKey: 'createdAt',
+			header: () => 'Created At',
+			cell: (info) => info.getValue()
+		}
+	];
+
 	let selectedRoute = $page.data.ordersType;
 
 	let isLoading: boolean = true;
@@ -24,7 +61,7 @@
 		orderName: string;
 		name: string;
 		email: string;
-		financialStatus: string;
+		orderStatus: string;
 		totalPrice: string;
 		createdAt: string;
 	}[] = [];
@@ -109,7 +146,7 @@
 					orderName: order.orderId,
 					name: order.name,
 					email: order.email,
-					financialStatus: order.financialStatus,
+					orderStatus: order.orderStatus,
 					orderType: order.orderType,
 					totalPrice: order.totalPrice,
 					createdAt: formatDate(order.createdAt)

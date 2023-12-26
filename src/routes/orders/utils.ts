@@ -1,32 +1,7 @@
 import type { ColumnDef } from '@tanstack/svelte-table';
 import type { Route } from './types';
 
-export const columns = [
-	{
-		name: 'Id',
-		hidden: true
-	},
-	{
-		name: 'Order name'
-	},
-	{
-		name: 'name'
-	},
-	{
-		name: 'Email'
-	},
-	{
-		name: 'Financial Status'
-	},
-	{
-		name: 'Total Price'
-	},
-	{
-		name: 'Created At'
-	}
-];
-
-type Person = {
+export type Person = {
 	orderName: number;
 	email: string;
 	name: string;
@@ -36,23 +11,21 @@ export const defaultColumns: ColumnDef<Person>[] = [
 	{
 		accessorKey: 'orderName',
 		header: () => 'Order Name',
-
+		cell: (info) => info.getValue()
+	},
+	{
+		accessorKey: 'orderStatus',
+		header: () => 'Status',
 		cell: (info) => info.getValue()
 	},
 	{
 		accessorKey: 'name',
 		header: () => 'Name',
-
 		cell: (info) => info.getValue()
 	},
 	{
 		accessorKey: 'email',
 		header: () => 'Email',
-		cell: (info) => info.getValue()
-	},
-	{
-		accessorKey: 'financialStatus',
-		header: () => 'Financial Status',
 		cell: (info) => info.getValue()
 	},
 	{

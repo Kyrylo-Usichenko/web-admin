@@ -78,6 +78,7 @@ export type AvailableScents = {
 export type Gender = 'feminine' | 'masculine' | 'unisex';
 export type Time = 'day' | 'night';
 export type Mood = 'sexy' | 'elegant' | 'fresh';
+export type OrderStatus = 'Processed' | 'On hold' | 'Ready to ship' | 'Fulfilled';
 
 export type Orders = Order[];
 export type Fragrances = Fragrance[];

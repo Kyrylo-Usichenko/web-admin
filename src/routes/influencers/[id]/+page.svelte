@@ -8,6 +8,7 @@
 	import { onMount } from 'svelte';
 	import Toastify from 'toastify-js';
 	import ScentRow from './../../../lib/shared/scentRow/ScentRow.svelte';
+	import { callAlert } from '$utils/alert';
 
 	export let data;
 
@@ -42,14 +43,7 @@
 			isDiecutModalOpened = false;
 			if (influencer) influencer.journey.diecutLink = newDiecut;
 		} catch (err) {
-			Toastify({
-				text: 'Something went wrong',
-				duration: 3000,
-				close: true,
-				gravity: 'top',
-				position: 'center',
-				stopOnFocus: true
-			}).showToast();
+			callAlert('Something went wrong');
 		} finally {
 			isDiecutSaving = false;
 		}
@@ -115,8 +109,7 @@
 		</div>
 	{:else if influencer}
 		<h2>
-			#{influencer.shopify.orderNumber} | {influencer.shopify.price}
-			{influencer.shopify.currency}
+			Hubspot contact ID - {data.id}
 		</h2>
 
 		<!-- {#if influencer.shopify}

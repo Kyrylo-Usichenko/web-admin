@@ -5,11 +5,12 @@
 	import Loader from '$lib/shared/loader/Loader.svelte';
 	import DiecutModal from '$lib/shared/modals/DiecutModal.svelte';
 	import EditModal from '$lib/shared/modals/editScents/EditScentsModal.svelte';
+	import OrderStatusTag from '$lib/shared/orderStatusTag/OrderStatusTag.svelte';
 	import type { GetDiyOrderData } from '$types/customerOrders.js';
 	import type { AvailableScents } from '$types/index.js';
+	import { callAlert } from '$utils/alert';
 	import { formatDate, relativeDate } from '$utils/time.js';
 	import { onMount } from 'svelte';
-	import Toastify from 'toastify-js';
 	import ScentRow from './../../../../lib/shared/scentRow/ScentRow.svelte';
 
 	export let data;
@@ -20,7 +21,7 @@
 	let isSaving = false;
 
 	let availableScents: AvailableScents | null = null;
-
+	let isApproving = false;
 	let isDiecutSaving = false;
 	let isDiecutModalOpened = false;
 
@@ -41,14 +42,7 @@
 			isDiecutModalOpened = false;
 			if (order) order.diecutLink = newDiecut;
 		} catch (err) {
-			Toastify({
-				text: 'Something went wrong',
-				duration: 3000,
-				close: true,
-				gravity: 'top',
-				position: 'center',
-				stopOnFocus: true
-			}).showToast();
+			callAlert('Something went wrong');
 		} finally {
 			isDiecutSaving = false;
 		}
@@ -111,6 +105,18 @@
 		}
 	};
 
+	const onApproveClick = async () => {
+		isApproving = true;
+		try {
+			await aiApi.approveOrder(data.id);
+			if (order) order.orderStatus = 'Ready to ship';
+		} catch (err) {
+			callAlert('Order has no diecut or one of the scents is out of stock');
+		} finally {
+			isApproving = false;
+		}
+	};
+
 	onMount(() => {
 		Promise.all([getOrders(), getScents()]);
 	});
@@ -125,7 +131,7 @@
 		<h1 class="title">{order.orderName} | {order.subtotalPrice} {order.currency}</h1>
 		<div class="tags">
 			<div class="tag" style="cursor: help" title={order.orderType}>DIY order</div>
-			<div class="tag">{order.confirmed ? 'Confirmed' : 'Not confirmed'}</div>
+			<OrderStatusTag status={order.orderStatus} />
 		</div>
 
 		<table class="table mainInfo">
@@ -272,6 +278,9 @@
 			</table>
 			<div class="editWrapper">
 				<Button onClick={toggleModal} text="Edit scents" />
+				{#if order.orderStatus === 'Processed'}
+					<Button onClick={onApproveClick} isLoading={isApproving} text="Approve order" />
+				{/if}
 			</div>
 		{:else}
 			<BrokenOrder {order} />
@@ -305,6 +314,7 @@
 	}
 
 	.tags {
+		margin: 8px 0 0;
 		display: flex;
 		gap: 5px;
 	}
@@ -314,7 +324,6 @@
 		font-weight: 600;
 	}
 	.tag {
-		margin: 5px 0 0;
 		width: fit-content;
 		padding: 8px 12px;
 		background: #333;
@@ -332,6 +341,8 @@
 
 	.editWrapper {
 		margin: 20px 0;
+		display: flex;
+		gap: 8px;
 	}
 
 	.scentsTitle {

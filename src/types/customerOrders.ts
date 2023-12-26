@@ -1,4 +1,4 @@
-import type { Gender, Mood, ScentToUpdate, Time } from '.';
+import type { Gender, Mood, OrderStatus, ScentToUpdate, Time } from '.';
 
 export type OrderType = 'influencerShop' | 'influencerDiy' | 'normalDiy';
 export type BottleSize = '5ML' | '15ML' | '50ML' | '100ML';
@@ -15,6 +15,7 @@ export type CustomerOrder = {
 	createdAt: string;
 	email: string;
 	financialStatus: string;
+	orderStatus: OrderStatus;
 	name: string;
 	orderType: string;
 	totalPrice: string;
@@ -116,6 +117,7 @@ export type InfluencerDiyJourney = {
 
 export type ShopifyOrder = {
 	orderName: string;
+	orderStatus: OrderStatus;
 	orderNumber: string;
 	orderType: OrderType;
 	customerEmail: string;
