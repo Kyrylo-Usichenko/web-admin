@@ -190,7 +190,7 @@
 			</tr>
 		</table>
 
-		{#if order.attributes && !order.attributes?.allInfluData && !order.attributes?.journeyData}
+		{#if !order.isBrokenOrder}
 			<h2 class="journeyTitle">Journey</h2>
 
 			<table class="table">

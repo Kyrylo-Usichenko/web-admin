@@ -116,6 +116,7 @@ export type InfluencerDiyJourney = {
 };
 
 export type ShopifyOrder = {
+	isBrokenOrder: boolean;
 	orderName: string;
 	orderStatus: OrderStatus;
 	orderNumber: string;
@@ -185,7 +186,7 @@ export interface GetInfluencerDiyOrderData extends InfluencerDiyShopifyOrder {
 			influencerScent: ScentToUpdate;
 		};
 		selectedMockup: string;
-	} | null;
+	};
 }
 
 export type GetDiyOrder = {
@@ -223,7 +224,7 @@ export interface GetDiyOrderData extends ShopifyOrder {
 			secondary2: ScentToUpdate;
 		};
 		selectedMockup: string;
-	} | null;
+	};
 }
 
 export type GetShopOrder = {
@@ -274,7 +275,7 @@ export interface GetShopOrderData extends FollowerShopifyOrder {
 			};
 		};
 		selectedMockup: string;
-	} | null;
+	};
 }
 
 export type GetInfluencerDiyOrderResBody = {
