@@ -357,10 +357,6 @@
 		border: none;
 		text-decoration: underline;
 	}
-	.oos {
-		background: #ff0000ba;
-		cursor: help;
-	}
 
 	.table {
 		border-collapse: collapse;

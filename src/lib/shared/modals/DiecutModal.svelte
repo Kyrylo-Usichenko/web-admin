@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Modal from '$lib/shared/modal/Modal.svelte';
-	import { onMount } from 'svelte';
 	import Button from '../button/Button.svelte';
 	import OpenIcon from '../icons/OpenIcon.svelte';
 
@@ -10,7 +9,6 @@
 	export let onSave: (file: File) => void;
 
 	let dropZoneInput: HTMLInputElement;
-	let isHovered = false;
 	let file: File | null | undefined = null;
 
 	const onInputChange = (event: Event) => {
@@ -23,19 +21,11 @@
 		file = e?.dataTransfer?.files[0];
 	};
 
-	const onDragOver = (e: DragEvent) => {
-		e.preventDefault();
-		isHovered = true;
-	};
-
 	const onSaveClick = () => {
 		if (!file) return;
 		onSave(file);
 	};
 
-	const onDragLeave = () => {
-		isHovered = false;
-	};
 	const onToggleModal = () => {
 		file = null;
 		if (dropZoneInput?.value) dropZoneInput.value = '';
@@ -47,13 +37,7 @@
 	<div class="inner">
 		<input type="file" style="display: none;" bind:this={dropZoneInput} on:change={onInputChange} />
 		{#if !file}
-			<div
-				class="dropzone"
-				on:drop={onDrop}
-				on:dragover={onDragOver}
-				on:dragleave={onDragLeave}
-				on:click={() => dropZoneInput.click()}
-			>
+			<div class="dropzone" on:drop={onDrop} on:click={() => dropZoneInput.click()}>
 				<h3>Drop diecut here</h3>
 				<p>or</p>
 				<button class="browse"> browse </button>

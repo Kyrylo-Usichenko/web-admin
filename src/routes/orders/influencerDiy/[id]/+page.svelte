@@ -57,7 +57,7 @@
 	}) => {
 		isSaving = true;
 		try {
-			const res = await aiApi.setInfluencerDiyScents({
+			await aiApi.setInfluencerDiyScents({
 				orderId: data.id,
 				main: scentsToSave?.main,
 				secScent: scentsToSave?.secScent1,

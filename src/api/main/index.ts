@@ -10,7 +10,6 @@ import type {
 } from '../../types/customerOrders';
 import HttpClient from '../http/http';
 import type {
-	GetInfluencerOrderResBody,
 	GetInfluencersReqBody,
 	GetOrdersReqBody,
 	SetInfluencerDiyScentsReqBody,
@@ -33,11 +32,6 @@ class Ai extends HttpClient {
 
 		return Ai.instanceCached;
 	};
-
-	public getInfluencerOrders = () => this.instance.get('/admin/influencer-store-orders');
-
-	public getInfluencerOrder = (id: string) =>
-		this.instance.get<GetInfluencerOrderResBody>(`/admin/influencer-store-orders/order/${id}`);
 
 	public getOrders = ({ ordersType, limit, offset, search }: GetOrdersReqBody) => {
 		const body: GetOrdersReqBody = {
@@ -79,7 +73,6 @@ class Ai extends HttpClient {
 	public getScents = (orderId: number | string) =>
 		this.instance.get<GetScentsResBody2>(`/admin/scents?orderId=${orderId}`);
 
-	public setScents = (body: SetScentsReqBody) => this.instance.put('/admin/orders/scents', body);
 	public setDiyScents = (body: SetScentsReqBody) =>
 		this.instance.put('/admin/orders/normalDiy/scents', body);
 
@@ -89,8 +82,6 @@ class Ai extends HttpClient {
 	public setShopOrderScents = (body: SetShopOrderScentsReqBody) =>
 		this.instance.put('/admin/orders/influencerShop/scents', body);
 
-	public generateDiecut = (orderId: number | string) =>
-		this.instance.put('/admin/orders/influencerDiy/diecut', { orderId });
 	public saveDiecut = (formData: FormData): Promise<string> =>
 		this.instance.postForm('/admin/upload-diecut', formData);
 
