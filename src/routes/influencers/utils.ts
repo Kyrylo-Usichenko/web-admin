@@ -20,8 +20,8 @@ type Person = {
 
 export const defaultColumns: ColumnDef<Person>[] = [
 	{
-		accessorKey: 'orderName',
-		header: () => 'Order Name',
+		accessorKey: 'hubspotContactId',
+		header: () => 'Contact Id',
 
 		cell: (info) => info.getValue()
 	},

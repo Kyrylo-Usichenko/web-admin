@@ -76,7 +76,7 @@
 	});
 </script>
 
-<div class="asdasd">
+<div>
 	<input
 		type="search"
 		bind:value={search}
@@ -92,7 +92,7 @@
 		<Table
 			data={tableData.map((influencer) => {
 				return {
-					orderName: influencer.shopifyOrderNumber,
+					hubspotContactId: influencer.hubspotContactId,
 					email: influencer.email,
 					name: influencer.name,
 					id: influencer.hubspotContactId
