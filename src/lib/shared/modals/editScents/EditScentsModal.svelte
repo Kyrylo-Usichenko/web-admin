@@ -30,19 +30,28 @@
 		<select bind:value={scent1} class="select">
 			{#each availableScents.main as scent}
 				<option value={scent}>
-					({scent.scentCode}) {scent.name} [{scent.count}]
+					({scent.scentCode}) {scent.name}
+					{#if scent.count}
+						[{scent.count}]
+					{/if}
 				</option>{/each}
 		</select>
 		<select bind:value={scent2} class="select">
 			{#each availableScents.secondary1 as scent}
 				<option value={scent}>
-					({scent.scentCode}) {scent.name} [{scent.count}]
+					({scent.scentCode}) {scent.name}
+					{#if scent.count}
+						[{scent.count}]
+					{/if}
 				</option>{/each}
 		</select>
 		<select bind:value={scent3} class="select">
 			{#each availableScents.secondary2 as scent}
 				<option value={scent}>
-					({scent.scentCode}) {scent.name} [{scent.count}]
+					({scent.scentCode}) {scent.name}
+					{#if scent.count}
+						[{scent.count}]
+					{/if}
 				</option>
 			{/each}
 		</select>

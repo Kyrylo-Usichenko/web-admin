@@ -65,7 +65,7 @@ export type ScentsToUpdate = {
 };
 
 type AvailableScent = {
-	count: number;
+	count?: number;
 	name: string;
 	scentCode: string;
 };

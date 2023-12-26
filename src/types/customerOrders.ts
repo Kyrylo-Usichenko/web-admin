@@ -79,16 +79,14 @@ export type InfluencerDetails = {
 	};
 };
 
-export type GetScentsResBody = {
-	[size: string]: {
-		'5ML'?: Scent;
-		'15ML'?: Scent;
-		'50ML'?: Scent;
-		'100ML'?: Scent;
-	};
+export type AllScentsScent = {
+	name: string;
+	scentCode: string;
 };
 
-export type GetScentsResBody2 = {
+export type GetAllScentsResBody = AllScentsScent[];
+
+export type GetScentsResBody = {
 	scents: {
 		main: {
 			count: number;
@@ -106,12 +104,6 @@ export type GetScentsResBody2 = {
 			scentCode: string;
 		}[];
 	};
-};
-
-type Scent = {
-	id: number;
-	title: string;
-	qty: number;
 };
 
 export type GetOrderResBody = {

@@ -1,5 +1,5 @@
 type Scents = {
-	count: number;
+	count?: number;
 	name: string;
 	scentCode: string;
 }[];

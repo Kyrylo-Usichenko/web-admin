@@ -4,8 +4,7 @@
 	import Loader from '$lib/shared/loader/Loader.svelte';
 	import DiecutModal from '$lib/shared/modals/DiecutModal.svelte';
 	import EditModal from '$lib/shared/modals/editScents/EditScentsModal.svelte';
-	import type { InfluencerDetails } from '$types/customerOrders';
-	import type { AvailableScents } from '$types/index.js';
+	import type { GetAllScentsResBody, InfluencerDetails } from '$types/customerOrders';
 	import { onMount } from 'svelte';
 	import Toastify from 'toastify-js';
 	import ScentRow from './../../../lib/shared/scentRow/ScentRow.svelte';
@@ -14,7 +13,7 @@
 
 	let influencer: InfluencerDetails | null = null;
 	let loading = true;
-	let availableScents: AvailableScents | null = null;
+	let allScents: GetAllScentsResBody | null = null;
 	let isModalOpened = false;
 	let isSaving = false;
 	let isDiecutSaving = false;
@@ -98,8 +97,8 @@
 	};
 	const getScents = async () => {
 		try {
-			const res = await aiApi.getScents(data.id);
-			availableScents = res.data.scents;
+			const res = await aiApi.getAllScents();
+			allScents = res.data;
 		} catch (err) {
 			console.log(err);
 		}
@@ -307,9 +306,13 @@
 	{/if}
 </main>
 
-{#if availableScents}
+{#if allScents}
 	<EditModal
-		{availableScents}
+		availableScents={{
+			main: allScents,
+			secondary1: allScents,
+			secondary2: allScents
+		}}
 		{toggleModal}
 		scents={{
 			main: scents.main,

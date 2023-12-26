@@ -1,11 +1,12 @@
 import type {
+	GetAllScentsResBody,
 	GetDiyOrder,
 	GetInfluencerDiyOrder,
 	GetInfluencerResBody,
 	GetInfluencersResBody,
 	GetOrderResBody,
 	GetOrdersResBody,
-	GetScentsResBody2,
+	GetScentsResBody,
 	GetShopOrder
 } from '../../types/customerOrders';
 import HttpClient from '../http/http';
@@ -71,7 +72,7 @@ class Ai extends HttpClient {
 		this.instance.put('/admin/update-influencer-scents', body);
 
 	public getScents = (orderId: number | string) =>
-		this.instance.get<GetScentsResBody2>(`/admin/scents?orderId=${orderId}`);
+		this.instance.get<GetScentsResBody>(`/admin/scents?orderId=${orderId}`);
 
 	public setDiyScents = (body: SetScentsReqBody) =>
 		this.instance.put('/admin/orders/normalDiy/scents', body);
@@ -87,6 +88,8 @@ class Ai extends HttpClient {
 
 	public saveInfluencerDiecut = (formData: FormData): Promise<string> =>
 		this.instance.postForm('/admin/upload-diecut-influencer', formData);
+
+	public getAllScents = () => this.instance.get<GetAllScentsResBody>('/admin/influencer/scents');
 }
 
 export default Ai;
