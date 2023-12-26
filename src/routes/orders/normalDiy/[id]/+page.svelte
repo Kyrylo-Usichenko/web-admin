@@ -84,11 +84,12 @@
 		}
 	};
 
-	const getOrders = async () => {
+	const getOrder = async () => {
 		loading = true;
 		try {
 			const res = await aiApi.getDiyOrder(data.id);
 			order = res.data.data;
+			if (!order.isBrokenOrder) getScents();
 		} catch (err) {
 			console.log(err);
 		} finally {
@@ -118,7 +119,7 @@
 	};
 
 	onMount(() => {
-		Promise.all([getOrders(), getScents()]);
+		getOrder();
 	});
 </script>
 

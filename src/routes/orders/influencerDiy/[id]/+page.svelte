@@ -89,6 +89,7 @@
 			order = res.data.data;
 
 			isModalOpened = false;
+			if (!order.isBrokenOrder) getScents();
 		} catch (err) {
 			console.log(err);
 		} finally {
@@ -117,7 +118,7 @@
 	};
 
 	onMount(() => {
-		Promise.all([getOrder(), getScents()]);
+		getOrder();
 	});
 </script>
 
