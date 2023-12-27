@@ -11,8 +11,8 @@
 	import { flexRender, type ColumnDef } from '@tanstack/svelte-table';
 	import { onMount } from 'svelte';
 	import Dropdown from './components/Dropdown.svelte';
-	import type { OrderType, OrderTypeName } from './types';
-	import { routes, statuses, type Person, type Status } from './utils';
+	import type { OrderTypeName, SetOrdersArguments, Status } from './types';
+	import { routes, statuses, type Person } from './utils';
 
 	const defaultColumns: ColumnDef<Person>[] = [
 		{
@@ -164,15 +164,7 @@
 		});
 	};
 
-	const setOrders = async ({
-		ordersType,
-		orderStatus,
-		shouldLoad
-	}: {
-		ordersType: OrderType;
-		orderStatus: Status;
-		shouldLoad?: boolean;
-	}) => {
+	const setOrders = async ({ ordersType, orderStatus, shouldLoad }: SetOrdersArguments) => {
 		if (shouldLoad) isLoading = true;
 		offset = (currentPage - 1) * limit;
 		try {

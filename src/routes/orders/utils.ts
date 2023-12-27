@@ -1,6 +1,5 @@
-import type { OrderStatus } from '$types/index';
 import type { ColumnDef } from '@tanstack/svelte-table';
-import type { Route } from './types';
+import type { Route, Status } from './types';
 
 export type Person = {
 	orderName: number;
@@ -64,7 +63,6 @@ export const routes: Route[] = [
 	}
 ];
 
-export type Status = 'All statuses' | OrderStatus;
 export const statuses: Status[] = [
 	'All statuses',
 	'Processed',
