@@ -47,7 +47,7 @@
 		}
 	];
 
-	let selectedRoute = $page.data.ordersType;
+	let selectedRoute = $page.data.ordersType as OrderTypeName;
 	let selectedStatus = $page.data.ordersStatus;
 
 	let isLoading: boolean = true;
@@ -72,8 +72,8 @@
 		const id = cellInfo.original.id;
 		let orderType = null;
 
-		if (selectedRoute !== '' && selectedRoute) orderType = selectedRoute;
-		if (selectedRoute === '' || !selectedRoute) {
+		if (selectedRoute !== 'All orders' && selectedRoute) orderType = selectedRoute;
+		if (selectedRoute === 'All orders' || !selectedRoute) {
 			if (cellInfo.original.orderType === 'influencer_shop') {
 				orderType = `influencerShop`;
 			}
