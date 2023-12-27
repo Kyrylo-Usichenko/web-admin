@@ -34,13 +34,14 @@ class Ai extends HttpClient {
 		return Ai.instanceCached;
 	};
 
-	public getOrders = ({ ordersType, limit, offset, search }: GetOrdersReqBody) => {
+	public getOrders = ({ limit, offset, search, ordersType, orderStatus }: GetOrdersReqBody) => {
 		const body: GetOrdersReqBody = {
 			offset,
 			limit
 		};
 		if (search) body.search = search;
 		if (ordersType) body.orderType = ordersType;
+		if (orderStatus) body.orderStatus = orderStatus;
 		return this.instance.post<GetOrdersResBody>('/admin/orders', body);
 	};
 

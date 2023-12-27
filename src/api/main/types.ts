@@ -1,3 +1,5 @@
+import type { OrderStatus } from "$types/index";
+
 type SetScentsReqBodyScents = {
 	main: string;
 	secScent1: string;
@@ -32,6 +34,7 @@ export type GetOrdersReqBody = {
 	limit: number;
 	offset: number;
 	search?: string;
+	orderStatus?: OrderStatus
 };
 
 export type GetInfluencersReqBody = {

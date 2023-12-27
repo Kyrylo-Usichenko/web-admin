@@ -82,7 +82,7 @@
 		bind:value={search}
 		on:input={onInputChange}
 		class="input"
-		placeholder="Email or Order Name"
+		placeholder="Email or Contact ID"
 	/>
 	{#if loading}
 		<div style="position: relative;">

@@ -5,13 +5,14 @@
 	import Loader from '$lib/shared/loader/Loader.svelte';
 	import OrderStatusTag from '$lib/shared/orderStatusTag/OrderStatusTag.svelte';
 	import Table from '$lib/shared/table/Table.svelte';
-	import type { OrderType } from '$types/customerOrders';
+	import { callAlert } from '$utils/alert';
 	import { navigate } from '$utils/navigate';
 	import { formatDate } from '$utils/time';
 	import { flexRender, type ColumnDef } from '@tanstack/svelte-table';
+	import { onMount } from 'svelte';
 	import Dropdown from './components/Dropdown.svelte';
-	import type { OrderTypeName } from './types';
-	import { routes, type Person } from './utils';
+	import type { OrderType, OrderTypeName } from './types';
+	import { routes, statuses, type Person, type Status } from './utils';
 
 	const defaultColumns: ColumnDef<Person>[] = [
 		{
@@ -22,8 +23,7 @@
 		{
 			accessorKey: 'orderStatus',
 			header: () => 'Status',
-			cell: (info) => flexRender(OrderStatusTag, { status: info.getValue() }),
-			
+			cell: (info) => flexRender(OrderStatusTag, { status: info.getValue() })
 		},
 		{
 			accessorKey: 'name',
@@ -48,12 +48,14 @@
 	];
 
 	let selectedRoute = $page.data.ordersType;
+	let selectedStatus = $page.data.ordersStatus;
 
 	let isLoading: boolean = true;
 	let currentPage: number = 1;
 	let offset: number = 0;
 	let total: number = 0;
 	let search: string = '';
+	let ordersStatusValue: Status = 'All statuses';
 	let orderTypeValue: OrderTypeName = 'All orders';
 	const limit = 50;
 	let tableData: {
@@ -93,19 +95,35 @@
 
 	const onPageChange = async (newPage: number) => {
 		currentPage = newPage;
+		setOrders({
+			orderStatus: selectedStatus,
+			ordersType: selectedRoute,
+			shouldLoad: true
+		});
 	};
 
 	const onNextClick = async () => {
 		currentPage++;
+		setOrders({
+			orderStatus: selectedStatus,
+			ordersType: selectedRoute,
+			shouldLoad: true
+		});
 	};
 
 	const onPrevClick = async () => {
 		currentPage--;
+		setOrders({
+			orderStatus: selectedStatus,
+			ordersType: selectedRoute,
+			shouldLoad: true
+		});
 	};
 
 	const onInputChange = () => {
 		currentPage = 1;
 		setOrders({
+			orderStatus: selectedStatus,
 			ordersType: selectedRoute,
 			shouldLoad: false
 		});
@@ -113,28 +131,54 @@
 
 	const onOrderTypeChange = (value: string) => {
 		currentPage = 1;
-		const newRoute = routes.find((route) => route.name === value);
-		if (!newRoute) alert('Wrong input value');
-		selectedRoute = newRoute?.ordersType;
-		const redirect = navigate({
-			currentPage: 'orders/orderTypeSelection',
-			orderType: selectedRoute
+		const newOrderType = routes.find((route) => route.name === value)?.ordersType;
+		if (!newOrderType) return callAlert('Wrong input value');
+		selectedRoute = newOrderType || 'All orders';
+
+		if (value === 'All orders') {
+			$page.url.searchParams.delete('ordersType');
+		} else {
+			$page.url.searchParams.set('ordersType', newOrderType);
+		}
+		goto(`?${$page.url.searchParams.toString()}`);
+		setOrders({
+			ordersType: selectedRoute,
+			orderStatus: selectedStatus,
+			shouldLoad: true
 		});
-		if (redirect.type === 'redirect') return goto(redirect.to);
+	};
+
+	const onOrdersStatusChange = (value: string) => {
+		currentPage = 1;
+		selectedStatus = value as Status;
+		if (value === 'All statuses') {
+			$page.url.searchParams.delete('ordersStatus');
+		} else {
+			$page.url.searchParams.set('ordersStatus', selectedStatus);
+		}
+		goto(`?${$page.url.searchParams.toString()}`);
+		setOrders({
+			orderStatus: selectedStatus,
+			ordersType: selectedRoute,
+			shouldLoad: true
+		});
 	};
 
 	const setOrders = async ({
 		ordersType,
+		orderStatus,
 		shouldLoad
 	}: {
 		ordersType: OrderType;
+		orderStatus: Status;
 		shouldLoad?: boolean;
 	}) => {
 		if (shouldLoad) isLoading = true;
 		offset = (currentPage - 1) * limit;
 		try {
 			const ordersRes = await aiApi.getOrders({
-				ordersType: ordersType,
+				ordersType: ordersType === 'All orders' ? undefined : ordersType,
+				orderStatus: orderStatus === 'All statuses' ? undefined : orderStatus,
 				limit,
 				offset,
 				search
@@ -153,7 +197,7 @@
 				};
 			});
 		} catch (error) {
-			console.log(error);
+			callAlert('Something went wrong while loading orders');
 		} finally {
 			if (shouldLoad) isLoading = false;
 		}
@@ -162,11 +206,15 @@
 	$: orderTypeValue =
 		routes.find((route) => route.ordersType === selectedRoute)?.name || 'All orders';
 
-	$: currentPage,
+	$: ordersStatusValue = statuses.find((status) => status === selectedStatus) || 'All statuses';
+
+	onMount(() => {
 		setOrders({
 			ordersType: $page.data.ordersType,
+			orderStatus: $page.data.ordersStatus,
 			shouldLoad: true
 		});
+	});
 </script>
 
 <div class="filters">
@@ -184,6 +232,7 @@
 			value={orderTypeValue}
 			onChange={onOrderTypeChange}
 		/>
+		<Dropdown options={statuses} value={ordersStatusValue} onChange={onOrdersStatusChange} />
 	</div>
 </div>
 {#if isLoading}
@@ -221,6 +270,7 @@
 	.order-type_wrapper {
 		display: flex;
 		align-items: center;
+		gap: 8px;
 	}
 	.input {
 		margin: 20px 0;
