@@ -76,6 +76,8 @@
 					}
 				};
 			}
+			if (order) order.orderStatus = 'Processed';
+
 			toggleModal();
 		} catch (err) {
 			console.log(err);

@@ -76,6 +76,8 @@
 						code: scentsToSave.secScent2
 					}
 				};
+			if (order) order.orderStatus = 'Processed';
+
 			toggleModal();
 		} catch (err) {
 			console.log(err);
