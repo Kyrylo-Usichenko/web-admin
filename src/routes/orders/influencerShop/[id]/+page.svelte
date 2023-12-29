@@ -42,7 +42,7 @@
 			isDiecutModalOpened = false;
 			if (order) order.diecutLink = newDiecut;
 		} catch (err) {
-			callAlert('Someting wehnt wrong!');
+			callAlert('Something went wrong');
 		} finally {
 			isDiecutSaving = false;
 		}
