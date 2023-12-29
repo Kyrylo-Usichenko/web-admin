@@ -87,6 +87,8 @@ export type AllScentsScent = {
 
 export type GetAllScentsResBody = AllScentsScent[];
 
+export type GetFollowerDiyJson = string[][];
+
 export type GetScentsResBody = {
 	scents: {
 		main: {
