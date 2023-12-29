@@ -14,7 +14,7 @@
 			const orders = getOrders(text);
 			isLoading = true;
 			ordersToShow = orders;
-			const res = await aiApi.getFollowerDiyJSON(orders);
+			const res = await aiApi.getFollowerDiyJSON(orders.map((order) => order.toUpperCase()));
 			const newJsons = res.data;
 			const newCsv = newJsons.map((data, i) => {
 				return {
