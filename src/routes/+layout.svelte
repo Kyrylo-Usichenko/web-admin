@@ -13,6 +13,9 @@
 			<a href="/influencers" class:active={$page.url.pathname.includes('/influencers')}>
 				Influencers
 			</a>
+			<a href="/csv-generator" class:active={$page.url.pathname.includes('/csv-generator')}>
+				CSV Generator
+			</a>
 		</nav>
 		<slot />
 	</div>
