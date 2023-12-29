@@ -42,7 +42,7 @@
 			isDiecutModalOpened = false;
 			if (order) order.diecutLink = newDiecut;
 		} catch (err) {
-			callAlert('Order has no diecut or one of the scents is out of stock');
+			callAlert('Someting wehnt wrong!');
 		} finally {
 			isDiecutSaving = false;
 		}
