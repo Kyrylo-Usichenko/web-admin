@@ -21,6 +21,12 @@
 		file = e?.dataTransfer?.files[0];
 	};
 
+	const onDragOver = (e: DragEvent) => {
+		e.preventDefault();
+	};
+
+
+
 	const onSaveClick = () => {
 		if (!file) return;
 		onSave(file);
@@ -37,7 +43,7 @@
 	<div class="inner">
 		<input type="file" style="display: none;" bind:this={dropZoneInput} on:change={onInputChange} />
 		{#if !file}
-			<div class="dropzone" on:drop={onDrop} on:click={() => dropZoneInput.click()}>
+			<div class="dropzone" on:drop={onDrop} on:click={() => dropZoneInput.click()} on:dragover={onDragOver}>
 				<h3>Drop diecut here</h3>
 				<p>or</p>
 				<button class="browse"> browse </button>
